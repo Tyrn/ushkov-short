@@ -1,0 +1,40 @@
+\documentclass[11pt,a4paper]{memoir}
+
+\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
+\usepackage{fontspec}
+\usepackage{xltxtra}
+% code borrowed from Polyglossia documentation — Thanks!
+\definecolor{myblue}{rgb}{0.02,0.04,0.48}
+\definecolor{lightblue}{rgb}{0.61,.8,.8}
+\definecolor{myred}{rgb}{0.65,0.04,0.07}
+
+\usepackage{polyglossia}
+\setmainlanguage{russian}
+\setotherlanguages{churchslavonic,english}
+\usepackage{churchslavonic}
+\usepackage{lettrine}
+
+\setmainfont[Mapping=tex-text]{Liberation Serif}
+\setsansfont[Mapping=tex-text]{Liberation Sans}
+\setmonofont[Mapping=tex-text]{Liberation Mono}
+
+\newfontfamily\churchslavonicfont[Script=Cyrillic,Ligatures=TeX,Scale=1.33333333,HyphenChar="005F]{PonomarUnicode.otf} 
+\newfontfamily{\slv}[Scale=MatchLowercase]{Ponomar Unicode TT}
+\newfontfamily{\ust}[Scale=MatchLowercase]{Menaion Unicode TT}
+\newfontfamily{\ind}{Indiction Unicode TT}
+
+\newcommand{\chs}[2][slv]{
+    \begin{#1}\ignorespaces
+        #2
+    \ignorespacesafterend\end{#1}
+}
+
+\begin{document}
+    \begin{slv}
+        Бл҃же́нъ мꙋ́жъ, и҆́же не и҆́де на совѣ́тъ нечести́выхъ, и҆ на пꙋтѝ грѣ́шныхъ не ста̀, и҆ на сѣда́лищи гꙋби́телей не сѣ́де: но въ зако́нѣ гдⷭ҇ни во́лѧ є҆гѡ̀, и҆ въ зако́нѣ є҆гѡ̀ поꙋчи́тсѧ де́нь и҆ но́щь.
+    \end{slv}
+
+Хороши хороши хороши хороши дом дом дом дом дом дом дом дом дом\chs{-ѡ҆б̾ѧ́тїѧѡ}мои мои мои мои.
+
+    Дыр бул щил. Убещур.
+\end{document}
