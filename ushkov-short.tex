@@ -47,7 +47,154 @@
 %% Suppress \hline on demand
 \newcommand{\hln}{}
 
+%% Borrowed from titlepages by Peter Wilson
+%\usepackage{pst-text}
+
+%%%% Additional font macros
+\makeatletter
+%%%% light series
+%% e.g., s:12
+\DeclareRobustCommand\ltseries
+{\not@math@alphabet\ltseries\relax
+    \fontseries\ltdefault\selectfont}
+%% e.g., t:32
+\newcommand{\ltdefault}{l}
+%% e.g., v:19
+\DeclareTextFontCommand{\textlt}{\ltseries}
+
+% heavy(bold) series
+\DeclareRobustCommand\hbseries
+{\not@math@alphabet\hbseries\relax
+    \fontseries\hbdefault\selectfont}
+%% e.g., t:32
+\newcommand{\hbdefault}{hb}
+%% e.g., v:19
+\DeclareTextFontCommand{\texthb}{\hbseries}
+\makeatother
+
+\newcommand*{\isbn}{{\small\textsc{ISBN}}}
+
+%%% for the Web-O-Mints fonts
+\newcommand*{\wb}[2]{\fontsize{#1}{#2}\usefont{U}{webo}{xl}{n}}
+%\renewcommand*{\wb}[2]{}%    probably kills Web-O-Mints (and some layouts?)
+%%% for the Fontsite 500 fonts
+\newcommand*{\FSfont}[1]{%
+    \fontencoding{T1}\fontfamily{#1}\selectfont}
+%\renewcommand*{\FSfont}[1]{}%    kills special font selections
+
+\newcommand*{\labelit}[1]{\phantomsection\label{#1}}
+\newcommand*{\refit}[1]{(graphic on page~\pageref{#1})}
+
+\chapterstyle{dash}\renewcommand*{\chaptitlefont}{\normalfont\itshape\LARGE}
+\setlength{\beforechapskip}{2\onelineskip}
+\setsecheadstyle{\normalfont\Large\raggedright}
+\makeindex
+\renewcommand*{\indexname}{Index of Designers}
+\makeatletter
+\newcommand*{\boxminipage}{%
+    \@ifnextchar [%]
+    \@ibxminipage
+    {\@iiibxminipage c\relax[s]}}
+\def\@ibxminipage[#1]{%
+    \@ifnextchar [%]
+    {\@iibxminipage{#1}}%
+    {\@iiibxminipage{#1}\relax[s]}}
+\def\@iibxminipage#1[#2]{%
+    \@ifnextchar [%]
+    {\@iiibxminipage{#1}{#2}}%
+    {\@iiibxminipage{#1}{#2}[#1]}}
+\let\@bxminto\@empty
+\def\@iiibxminipage#1#2[#3]#4{%
+    \ifx\relax#2\else
+    \setlength\@tempdimb{#2}%
+    \def\@bxminto{to\@tempdimb}%
+    \fi
+    \leavevmode
+    \@pboxswfalse
+    \if #1b\vbox
+    \else
+    \if #1t\vtop
+    \else
+    \ifmmode \vcenter
+    \else \@pboxswtrue $\vcenter
+    \fi
+    \fi
+    \fi
+    %  \@bxminto
+    \bgroup%          outermost vbox
+    \hsize #4
+    \hrule\@height\fboxrule
+    \hbox\bgroup%   inner hbox
+    \vrule\@width\fboxrule \hskip\fboxsep 
+    \vbox \@bxminto
+    \bgroup% innermost vbox
+    \vskip\fboxsep
+    \advance\hsize -2\fboxrule \advance\hsize -2\fboxsep
+    \textwidth\hsize \columnwidth\hsize
+    \@parboxrestore
+    \def\@mpfn{mpfootnote}\def\thempfn{\thempfootnote}\c@mpfootnote\z@
+    \let\@footnotetext\@mpfootnotetext
+    \let\@listdepth\@mplistdepth \@mplistdepth\z@
+    \@minipagerestore\@minipagetrue
+    \everypar{\global\@minipagefalse\everypar{}}}
+
+\def\endboxminipage{%
+    \par\vskip-\lastskip
+    \ifvoid\@mpfootins\else
+    \vskip\skip\@mpfootins\footnoterule\unvbox\@mpfootins\fi
+    \vskip\fboxsep
+    \egroup%    end innermost vbox
+    \hskip\fboxsep \vrule\@width\fboxrule
+    \egroup%    end hbox
+    \hrule\@height\fboxrule
+    \egroup%    end outermost vbox
+    \if@pboxsw $\fi}
+\makeatother
+
+\DeclareRobustCommand{\cs}[1]{\texttt{\char`\\#1}}
+\newlength{\tpheight}\setlength{\tpheight}{0.9\textheight}
+\newlength{\txtheight}\setlength{\txtheight}{0.9\tpheight}
+\newlength{\tpwidth}\setlength{\tpwidth}{0.9\textwidth}
+\newlength{\txtwidth}\setlength{\txtwidth}{0.9\tpwidth}
+\newlength{\drop}
+
+\newenvironment{showtitle}{%
+    \begin{boxminipage}[c][\tpheight]{\tpwidth}
+        \centering\begin{vplace}\begin{minipage}[c][\txtheight]{\txtwidth}}%
+            {\end{minipage}\end{vplace}\end{boxminipage}}
+
+\newcommand*{\titleCC}{\begingroup% City of Cambridge
+    \drop=0.1\txtheight
+    \vspace*{\drop}
+    \centering 
+    {\Large\itshape КРАТКИЙ УЧЕБНИК}\\[0.5\drop]
+    {\textcolor{Red}{\HUGE\bfseries {\slv{✠}}}}\par
+    \vspace{\drop}
+    {\LARGE\itshape ЦЕРКОВНОСЛАВЯНСКОГО ЯЗЫКА}\par
+    \vfill
+    {\Large УШКОВ А.В.}\par
+    \vfill
+%    {\plogo}\\[0.5\baselineskip]
+    {\itshape Веркольский монастырь}\par
+    {\scshape 2017}\par
+    %\vfill
+    \vspace*{\drop}
+    \endgroup}
+%% From titlepages by Peter Wilson, end
+
 \begin{document}
+    \begin{titlingpage}
+        %% Borrowed from titlepages by Peter Wilson
+        \begin{showtitle}
+            \titleCC
+        \end{showtitle}
+        \labelit{CC}
+        {
+            \par\vspace{0.2\baselineskip}
+            %        \footnotesize \verb?\titleCC?
+        }
+        %% From titlepages by Peter Wilson, end
+    \end{titlingpage}
     
     \tableofcontents
     
@@ -339,7 +486,7 @@
             {\slv{Л}} & {\slv{л}} & люди & л\\\hln
             {\slv{М}} & {\slv{м}} & мыслете & м\\\hln
             {\slv{Н}} & {\slv{н}} & наш & н\\\hln
-            {\slv{Ѻ}} & {\slv{ѻ, о}} & он & о\\\hln
+            {\slv{Ѻ, Ѽ}} & {\slv{ѻ, о}} & он & о\\\hln
             {\slv{П}} & {\slv{п}} & покой & п\\\hln
             {\slv{Р}} & {\slv{р}} & рцы & р\\\hln
             {\slv{С}} & {\slv{с}} & слово & с\\\hln
@@ -401,7 +548,21 @@
 
                 \subsubsection{Особенности правописания и произношения некоторых букв в церковнославянском языке}
 
-    Буква {\slv{Г}} (<<глаголь>>)
+    Буква {\slv{Г}} (<<глаголь>>) перед {\slv{г, к, х}} произносится как звук <<и>>, например: {\slv{сѷгклі́тъ}} (<<синклит>>), {\slv{а҆сѷгкрі́тъ}} (<<асинкрит>>). Исключаются из этого правила слова: {\slv{а҆гге́й}} (<<Аггей>>) и {\slv{а҆́гге́лъ}} (<<аггел>>, в значении злого духа).
+    
+    Буквы {\slv{є, е}}. Буква {\slv{є}} (так называемое <<удлиненное есть>>) пишется всегда в начале слова; в середине же и на конце слова обычно пишется буква {\slv{е}} (<<простое есть>>), например: {\slv{є҆́зеро, є҆ле́нь, се́рдце}}. Но иногда буква {\slv{є}} пишется и в середине слова и даже в конце слова. Эти случаи будут рассмотрены впоследствии.
+    
+    Буква {\slv{ѕ}} (<<зело>>) произносится как русское <<з>> и пишется только в семи коренных словах: {\slv{ѕвѣзда̀, ѕвѣ́рь, ѕе́лїе, ѕла́къ, ѕмі́й, ѕло̀, ѕѣлѡ̀}}, а также в производных от этих слов: {\slv{ѕлы́й, ѡ҆ѕло́бити, ѕла́чный, ѕвѣ́рскїй}} и др.
+    
+    Буква {\slv{ї}} (<<и>>) пишется пред гласными, например: {\slv{воскресе́нїе}}. Но в словах иностранных (еврейских и греческих) эта буква пишется и перед согласными, например: {\slv{і҆́долъ, вїно̀}}. Слово <<мир>> в значении <<вселенная>> в славянском языке пишется через {\slv{ї}}, например: {\slv{ненави́дитъ ва́съ мі́ръ}} (вселенная) (Ин. 15, 19), а это же самое слово, но в значении <<покой>>, <<тишина>> пишется через {\slv{и}} (<<иже>>), например: {\slv{ми́ръ мо́й даю̀ ва́мъ}} (т.е. даю благодатное умиротворение, покой) (Ин. 14, 27).
+    
+    Буквы {\slv{ѻ, о, ѽ}}. Буква {\slv{ѻ}} (<<он польск\'ое>>) пишется в начале слова, например: {\slv{ѻ҆́гнь, ѻ҆́ко}}. Исключение составляет слово {\slv{і҆ѻрда́нъ}}. Буква {\slv{о}} (<<он простое>>) пишется в середине и в конце слова, например: {\slv{со́нмъ, не́бо}}. Буква {\slv{ѽ}} употребляется только в качестве междометия.
+    
+    Буквы {\slv{ᲂу, ꙋ, у}} (<<ук>>) изображают звук <<у>>, причем буква {\slv{ᲂу}} пишется в начале слова, а {\slv{ꙋ}}~---~в середине и на конце слова, например: {\slv{ᲂу҆че́нїе, ᲂу҆́бѡ, дꙋша̀, рꙋкꙋ̀}}. Буква {\slv{у}} (без буквы {\slv{о}}) в словах совсем не пишется, а употребляется в значении цифры, о чем будет сказано далее.
+    
+    Буква {\slv{ѣ}} (<<ять>>) первоначально изображала собою звук как бы средний между нашими звуками <<е>> и <<я>> (почему и названа <<ять>>). Но с утратой этого звука в произношении буква {\slv{ѣ}} в последствии в церковнославянском языке стала означать звук <<е>>.
+    
+    Буквы
 
 %                \subsubsection{Правописание и произношение букв, перешедших в церковнославянский язык из греческого языка}
 %                \subsubsection{Правописание букв\chs{ꙗ}и\chs{ѧ}}
