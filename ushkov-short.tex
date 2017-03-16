@@ -1,6 +1,7 @@
 \documentclass[11pt,a4paper]{memoir}
 
 \pagestyle{plain}
+\usepackage{longtable}
 
 \usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
 \usepackage{fontspec}
@@ -49,6 +50,9 @@
 %        #2
 %    \ignorespacesafterend\end{#1}
 %}
+
+%% Suppress \hline on demand
+\newcommand{\hln}{}
 
 \begin{document}
     
@@ -303,58 +307,69 @@
 
     Изображения звуков речи условными знаками в письме или в печати называются \textbf{буквами}.
 
-    Собрание всех букв языка, расположенных в общепринятом порядке, называется \textbf{азбукой} (от названия двух первых славянских букв <<аз>> и <<буки>>).
+    Собрание всех букв языка, расположенных в общепринятом порядке, называется \textbf{азбукой} (от названия двух первых славянских букв <<аз>> и <<буки>>). Церковнославянская азбука состоит из 39 букв.
 
-    Церковнославянская азбука состоит из следующих 39 букв:
 
-    \begin{table}[htbp]
-        \centering
-        \setlength{\extrarowheight}{4pt}%
-        \begin{tabular}{|c|c|c|c|}
+    \begin{center}
+        \renewcommand*{\arraystretch}{1.4}    \begin{longtable}{|c|c|c|c|}
+            \caption*{Буквы церковнославянской азбуки}\\
             \hline
-            Прописная буква & Малая буква & Название & Произношение\\\hline
-            {\slv{А}} & {\slv{а}} & аз & а\\\hline
-            {\slv{Б}} & {\slv{б}} & буки & б\\\hline
-            {\slv{В}} & {\slv{в}} & веди & в\\\hline
-            {\slv{Г}} & {\slv{г}} & глаголь & г\\\hline
-            {\slv{Д}} & {\slv{д}} & добро & д\\\hline
-            {\slv{Е}} & {\slv{є, е}} & есть & е\\\hline
-            {\slv{Ж}} & {\slv{ж}} & живете & ж\\\hline
-            {\slv{Ѕ}} & {\slv{ѕ}} & зело & з\\\hline
-            {\slv{З}} & {\slv{з}} & земля & з\\\hline
-            {\slv{И}} & {\slv{и}} & иже & и\\\hline
-            {\slv{І}} & {\slv{ї}} & и & и\\\hline
-            {\slv{К}} & {\slv{к}} & како & к\\\hline
-            {\slv{Л}} & {\slv{л}} & люди & л\\\hline
-            {\slv{М}} & {\slv{м}} & мыслете & м\\\hline
-            {\slv{Н}} & {\slv{н}} & наш & н\\\hline
-            {\slv{Ѻ}} & {\slv{ѻ, о}} & он & о\\\hline
-            {\slv{П}} & {\slv{п}} & покой & п\\\hline
-            {\slv{Р}} & {\slv{р}} & рцы & р\\\hline
-            {\slv{С}} & {\slv{с}} & слово & с\\\hline
-            {\slv{Т}} & {\slv{т}} & твердо & т\\\hline
-            {\slv{Оу}} & {\slv{ᲂу, ꙋ, у}} & ук & у\\\hline
-            {\slv{Ф}} & {\slv{ф}} & ферт & ф\\\hline
-            {\slv{Х}} & {\slv{х}} & хер & х\\\hline
-            {\slv{Ц}} & {\slv{ц}} & цы & ц\\\hline
-            {\slv{Ч}} & {\slv{ч}} & червь & ч\\\hline
-            {\slv{Ш}} & {\slv{ш}} & ша & ш\\\hline
-            {\slv{Щ}} & {\slv{щ}} & ща & щ\\\hline
-            {\slv{Ъ}} & {\slv{ъ}} & ер & \\\hline
-            {\slv{Ы}} & {\slv{ы}} & ы & ы\\\hline
-            {\slv{Ь}} & {\slv{ь}} & ерь & \\\hline
-            {\slv{Ѣ}} & {\slv{ѣ}} & ять & е\\\hline
-            {\slv{Ю}} & {\slv{ю}} & ю & ю\\\hline
-            {\slv{Ꙗ, Ѧ}} & {\slv{ꙗ, ѧ}} & я & я\\\hline
-            {\slv{Ѡ}} & {\slv{ѡ}} & омега & о\\\hline
-            {\slv{Ѿ}} & {\slv{ѿ}} & от & от\\\hline
-            {\slv{Ѯ}} & {\slv{ѯ}} & кси & кс\\\hline
-            {\slv{Ѱ}} & {\slv{ѱ}} & пси & пс\\\hline
-            {\slv{Ѳ}} & {\slv{ѳ}} & фита & ф\\\hline
-            {\slv{Ѵ}} & {\slv{ѵ}} & ижица & и, в\\\hline
-%            {\slv{}} & {\slv{}} & & \\\hline
-        \end{tabular}
-    \end{table}
+                Прописная буква & Малая буква & Название & Произношение\\
+            
+            \hline
+            \endfirsthead
+    %        \multicolumn{4}{c}%
+    %        {\tablename\ \thetable\ -- \textit{Continued from previous page}} \\
+            \hline
+                Прописная буква & Малая буква & Название & Произношение\\
+            \hline
+            \endhead
+            \hline % \multicolumn{4}{r}{\textit{Continued on next page}} \\
+            \endfoot
+            \hline
+            \endlastfoot
+            {\slv{А}} & {\slv{а}} & аз & а\\\hln
+            {\slv{Б}} & {\slv{б}} & буки & б\\\hln
+            {\slv{В}} & {\slv{в}} & веди & в\\\hln
+            {\slv{Г}} & {\slv{г}} & глаголь & г\\\hln
+            {\slv{Д}} & {\slv{д}} & добро & д\\\hln
+            {\slv{Е}} & {\slv{є, е}} & есть & е\\\hln
+            {\slv{Ж}} & {\slv{ж}} & живете & ж\\\hln
+            {\slv{Ѕ}} & {\slv{ѕ}} & зело & з\\\hln
+            {\slv{З}} & {\slv{з}} & земля & з\\\hln
+            {\slv{И}} & {\slv{и}} & иже & и\\\hln
+            {\slv{І}} & {\slv{ї}} & и & и\\\hln
+            {\slv{К}} & {\slv{к}} & како & к\\\hln
+            {\slv{Л}} & {\slv{л}} & люди & л\\\hln
+            {\slv{М}} & {\slv{м}} & мыслете & м\\\hln
+            {\slv{Н}} & {\slv{н}} & наш & н\\\hln
+            {\slv{Ѻ}} & {\slv{ѻ, о}} & он & о\\\hln
+            {\slv{П}} & {\slv{п}} & покой & п\\\hln
+            {\slv{Р}} & {\slv{р}} & рцы & р\\\hln
+            {\slv{С}} & {\slv{с}} & слово & с\\\hln
+            {\slv{Т}} & {\slv{т}} & твердо & т\\\hln
+            {\slv{Оу}} & {\slv{ᲂу, ꙋ, у}} & ук & у\\\hln
+            {\slv{Ф}} & {\slv{ф}} & ферт & ф\\\hln
+            {\slv{Х}} & {\slv{х}} & хер & х\\\hln
+            {\slv{Ц}} & {\slv{ц}} & цы & ц\\\hln
+            {\slv{Ч}} & {\slv{ч}} & червь & ч\\\hln
+            {\slv{Ш}} & {\slv{ш}} & ша & ш\\\hln
+            {\slv{Щ}} & {\slv{щ}} & ща & щ\\\hln
+            {\slv{Ъ}} & {\slv{ъ}} & ер & \\\hln
+            {\slv{Ы}} & {\slv{ы}} & ы & ы\\\hln
+            {\slv{Ь}} & {\slv{ь}} & ерь & \\\hln
+            {\slv{Ѣ}} & {\slv{ѣ}} & ять & е\\\hln
+            {\slv{Ю}} & {\slv{ю}} & ю & ю\\\hln
+            {\slv{Ꙗ, Ѧ}} & {\slv{ꙗ, ѧ}} & я & я\\\hln
+            {\slv{Ѡ}} & {\slv{ѡ}} & омега & о\\\hln
+            {\slv{Ѿ}} & {\slv{ѿ}} & от & от\\\hln
+            {\slv{Ѯ}} & {\slv{ѯ}} & кси & кс\\\hln
+            {\slv{Ѱ}} & {\slv{ѱ}} & пси & пс\\\hln
+            {\slv{Ѳ}} & {\slv{ѳ}} & фита & ф\\\hln
+            {\slv{Ѵ}} & {\slv{ѵ}} & ижица & и, в\\\hln
+    %            {\slv{}} & {\slv{}} & & \\\hln
+        \end{longtable}
+    \end{center}
 
     \begin{flushright}
         \emph{Упражнение 1}
