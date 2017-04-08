@@ -2,8 +2,6 @@
 
 \pagestyle{plain}
 
-\usepackage[explicit]{titlesec}
-
 \usepackage{longtable}
 \usepackage{makecell}
 \usepackage{multirow}
@@ -37,40 +35,8 @@
 
 \sloppy
 
-%% Ensure sequential numbering of subsubsections and paragraphs.
-\setsecnumdepth{paragraph}
-\counterwithout{paragraph}{subsubsection}
-\counterwithout{subsubsection}{subsection}
-\renewcommand{\thechapter}{\arabic{chapter}}
-\renewcommand{\thesection}{\arabic{section}}
-\renewcommand{\thesubsection}{\Roman{subsection}}
-\renewcommand{\thesubsubsection}{\S\arabic{subsubsection}}
-\setcounter{tocdepth}{3} % Must not precede the above
+%%\/ Borrowed from titlepages by Peter Wilson \/%%
 
-%\setparaheadstyle{\normalsize\itshape}
-%\setafterparaskip{1ex}
-
-%\titleformat{<command>}[<shape>]{<format>}{<label>}{<sep>}{<before>}[<after>]
-\titleformat{\paragraph}[hang]{\raggedleft\normalfont\small\itshape\bfseries}{}{0pt}{#1 \arabic{paragraph}}
-
-%% Suppress \hline on demand
-\newcommand{\hln}{}
-
-%% Some fixed horizontal spaces
-\newcommand{\hspca}{\hspace{2.5em}}
-\newcommand{\hspcb}{\hspace{3.5em}}
-
-%% \makecell resized
-\newcommand{\mkcella}{\scriptsize\makecell}
-
-%% Slavonic resized
-\newcommand{\slva}[1]{\scriptsize\slv{#1}}
-
-%% Rotate cell
-\newcommand{\spheading}[2][10em]{% \spheading[<width>]{<stuff>}
-    \rotatebox{90}{\parbox{#1}{\raggedright #2}}}
-
-%% Borrowed from titlepages by Peter Wilson
 %\usepackage{pst-text}
 
 %%%% Additional font macros
@@ -203,9 +169,77 @@
     %\vfill
     \vspace*{\drop}
     \endgroup}
-%% From titlepages by Peter Wilson, end
+
+%%/\ Borrowed from titlepages by Peter Wilson /\%%
+
+%%\/ A tiny toolbox \/%%
+
+%% Suppress \paragraph{title} on demand
+\newcommand{\exercise}{}
+
+%% Suppress \hline on demand
+\newcommand{\hln}{}
+
+%% Some fixed horizontal spaces
+\newcommand{\hspca}{\hspace{2.5em}}
+\newcommand{\hspcb}{\hspace{3.5em}}
+
+%% \makecell resized
+\newcommand{\mkcella}{\scriptsize\makecell}
+
+%% Slavonic resized
+\newcommand{\slva}[1]{\scriptsize\slv{#1}}
+
+%% Rotate cell
+\newcommand{\spheading}[2][10em]{% \spheading[<width>]{<stuff>}
+    \rotatebox{90}{\parbox{#1}{\raggedright #2}}}
+
+%%/\ A tiny toolbox /\%%
+
+%%\/ Build document structure, ToC, links et al. \/%%
+
+%% Ensure sequential numbering of subsubsections and paragraphs.
+\setsecnumdepth{paragraph}
+\counterwithout{paragraph}{subsubsection}
+\counterwithout{subsubsection}{subsection}
+\setcounter{tocdepth}{3} % Must not precede the above
+
+%%%\/ Set section/paragraph title appearance \/%%%
+
+\setparaheadstyle{\normalsize\itshape}
+\setafterparaskip{1ex}
+
+\renewcommand{\thechapter}{\arabic{chapter}}
+\renewcommand{\thesection}{\arabic{section}}
+\renewcommand{\thesubsection}{\Roman{subsection}}
+\renewcommand{\thesubsubsection}{\S\arabic{subsubsection}}
+\renewcommand{\theparagraph}{{Упражнение }\arabic{paragraph}}
+
+%\usepackage[explicit]{titlesec}
+
+%\titleformat{<command>}[<shape>]{<format>}{<label>}{<sep>}{<before>}[<after>]
+%\titleformat{\paragraph}[hang]{\raggedleft\normalfont\small\itshape\bfseries}{}{0pt}{#1 \arabic{paragraph}}
+
+%%%/\ Set section/paragraph title appearance /\%%%
+
+\iffalse
+    Courtesy of Heiko Oberdiek:
+    
+    Unique anchor names
+
+    The trouble with the links is caused by anchor names that are not unique. This is caused by the counter reset. Both counters subsection and subsubsection are reusing its numbers. But hyperref needs unique numbers to generate the anchor names to generate the link destinations.
+
+    Uniqueness can be provided by a proper definition of the companion macros \theH<counter> that are used by hyperref if they are available. The following example adds a macro \ChapterAnchorPrefix to be inserted into the definitions of \theH<counter> for section and subsection. If a counter is reset, then \ChapterAnchorPrefix must be assigned a new value.
+\fi
 
 \usepackage[hidelinks]{hyperref}
+\usepackage{bookmark}
+
+\newcommand*{\ChapterAnchorPrefix}{chapter}
+\def\theHsection{\ChapterAnchorPrefix.\the\value{section}}
+\def\theHsubsubsection{\ChapterAnchorPrefix.\the\value{subsubsection}}
+
+%%/\ Build document structure, ToC, links et al. /\%%
 
 \begin{document}
     \begin{titlingpage}
@@ -224,14 +258,9 @@
     \tableofcontents*
     
     \chapter*{}
-%    \markboth{}{}
         \section*{Благолепие церковнославянского языка}
         \label{sec:blago}
-%        \phantomsection\addcontentsline{toc}{section}{\nameref{sec:blago}}
-
-%% \nameref{} is not quite reliable in this context
-
-        \phantomsection\addcontentsline{toc}{section}{Благолепие церковнославянского языка}
+        \addcontentsline{toc}{section}{\nameref*{sec:blago}}
 
     Прошло уже более тысячи лет со времени Крещения Руси. Воспринятое ею Православие, благодаря трудам святых Мефодия и Кирилла, совершает свои благоговейные богослужения на церковнославянском языке. Он по своей структуре наиболее близок к греческому, и это позволило сохранить существующий в Греческой церкви строй богослужения, что явилось для многочисленных славянских народов великим благом и живительным источником благочестия и совершенствования нравственного в духе истины правой веры, а также руководством в земных делах: образования, иконографии, храмо- и градостроительства. Наша Русская Православная Церковь восприняла в неповрежденности и чистоте от Греческой Матери Церкви все догматическое, литургическое, духовное, святоотеческое наследие и предание, связав все это, с помощью славянского языка, с духом народа христианского на Руси, с жизнью и бытом и просвещением, ибо на славянский язык были переведены все богослужебные книги и писания греческих отцов, прием сохранялась точность, ясность и истинность, хотя перевод и являлся творческим делом.
     
@@ -417,8 +446,7 @@
     
     \section*{Краткий учебник церковнославянского языка\\\emph{предисловие}}
     \label{sec:brief}
-%    \addcontentsline{toc}{section}{\nameref{sec:brief}}
-    \phantomsection\addcontentsline{toc}{section}{Краткий учебник церковнославянского языка\\\emph{предисловие}}
+    \addcontentsline{toc}{section}{\nameref*{sec:brief}}
     
     Составитель сего учебника доброй памяти emph{профессор Анатолий Васильевич Ушков}.
     
@@ -435,11 +463,10 @@
     
     \chapter*{1-й класс}
     \label{ch:firstgrade}
-    \addcontentsline{toc}{chapter}{\nameref{ch:firstgrade}}
+    \addcontentsline{toc}{chapter}{\nameref*{ch:firstgrade}}
         \section*{Введение}
         \label{sec:intro}
-%        \phantomsection\addcontentsline{toc}{section}{\nameref{sec:intro}}
-        \phantomsection\addcontentsline{toc}{section}{Введение}
+        \addcontentsline{toc}{section}{\nameref*{sec:intro}}
                 \subsubsection[Значение церковнославянского языка]{Значение церковнославянского языка для православного богослужения и православного пастыря}
                 
     Церковнославянский язык имеет очень важное значение для православного христианина. На этом языке совершается богослужение в нашей Православной Русской Церкви и написаны наши священные и богослужебные книги. По своему возвышенному характеру, по своей силе и звучности церковнославянский язык является наиболее совершенным средством для выражения религиозных настроений православного русского человека. Высшие стремления духа и глубокие чувствования, отрешенные от земного и направленные к небесному, чистому и вечному, получают наиболее соответствующее выражение в этом языке, далеком от обычного, житейского.
@@ -564,7 +591,7 @@
         \end{longtable}
     \end{center}
 
-                    \paragraph{Упражнение}
+                    \paragraph{\exercise}
     
     \textbf{Славянские или церковные буквы, сходные с русскими}
     
@@ -632,7 +659,7 @@
     
     Но в слове <<язык>>, которое в славянском языке имеет много значений, как-то: член тела, орган речи, наречие или говор, народ, племя, то условились, что если слово <<язык>> обозначает народ или племя, писать букву {\slv{ꙗ}}, например: {\slv{ꙗ҆зы́къ самарі́йскїй}} (т.е. народ самарийский). Если же слово <<язык>> обозначает член тела, орган речи, наречие (говор), то условились писать букву{\slv{ѧ}}, например: {\slv{Прильпнѝ ѧ҆зы́къ мо́й горта́ни моемꙋ̀}} (Пс. 136, 6); {\slv{церко́вно-славѧ́нскїй ѧ҆зы́къ}}.
     
-                    \paragraph{Упражнение}
+                    \paragraph{\exercise}
 
     \textbf{Славянские или церковные буквы, не сходные с русскими}
     \medskip
@@ -807,7 +834,7 @@
 
     \textbf{Упражнения в чтении употребительнейших слов под титлами}
 
-                    \paragraph{Упражнение}
+                    \paragraph{\exercise}
     
     \begin{slv}
         Бг҃ъ (Бо́гъ), Бг҃а (Бо́га), Бг҃ꙋ (Бо́гꙋ), Бг҃ови (Бо́гови), Бг҃омъ (Бо́гомъ), Бж҃е (Бо́же), ѡ҆ Бз҃ѣ (Бо́зѣ).
@@ -823,7 +850,7 @@
         Воскр҃съ І҆и҃съ ѿ гро́ба, ꙗ҆́кѡже проречѐ.~\textemdash~Вѣ́рꙋю во Є҆ди́наго Гдⷭ҇а І҆и҃са Хрⷭ҇та̀.~\textemdash~І҆и҃се, Сы́не Бж҃їй, поми́лꙋй мѧ̀.~\textemdash~І҆и҃се, Сп҃се мо́й, спасѝ мѧ҃!~\textemdash~Возра́довасѧ дх҃ъ мо́й ѡ҆ Бз҃ѣ Сп҃сѣ мое́мъ.~\textemdash~Дрꙋ́къ дрꙋ́га тѧгѡты̀ носи́те, и҆ та́кѡ и҆спо́лните зако́нъ Хрⷭ҇то́въ.
     \end{slv}
 
-                    \paragraph{Упражнение}
+                    \paragraph{\exercise}
     
     \begin{slv}
         Ст҃ъ (Свѧ́тъ), Ст҃ы́й (Свѧты́й), Ст҃а́гѡ, Ст҃о́мꙋ, Ст҃и, Ст҃а́ѧ, Ст҃ы̑мъ.
@@ -840,7 +867,7 @@
     \end{slv}
     \medskip
 
-                    \paragraph{Упражнение}
+                    \paragraph{\exercise}
 
     \begin{slv}
         А҆́гг҃лъ (А҆́нгелъ), Влⷣко (Влады́ко), Влⷣчца (Влады́чица), Бл҃гъ (Бла́гъ), Цр҃ь (Ца́рь), Цр҃ица (Цари́ца).
@@ -853,7 +880,7 @@
     \end{slv}
     \medskip
 
-                    \paragraph{Упражнение}
+                    \paragraph{\exercise}
 
     \begin{slv}
         Мрⷣость (Мꙋ̀дрость), Премⷣръ (Премꙋ́дръ), Млⷭ҇ть (Ми́лость), Мл҃тва (Моли́тва), Прⷭ҇то́лъ (Престо́лъ).
@@ -1325,7 +1352,7 @@
 
     Если при глаголе {\slv{бы́ти}} находится отрицание {\slv{не}},то в настоящем времени {\slv{не}} и {\slv{є҆́смь}} сливаются. Происходит так называемое \emph{стяжание} двух звуков {\slv{е}}. При стяжании двойной звук {\slv{ее}} переходит в {\slv{ѣ}}, и образуется слово {\slv{нѣсмь}}. В таком положении глагол {\slv{бы́ти}} с отрицанием {\slv{не}} и спрягается в настоящем времени во всех лицах и числах: {\slv{нѣ́смь, нѣ́си, нѣ́сть}}\ldots~{\slv{нѣ́смы, нѣ́сте}}\ldots~Исключение из этого правила составляет только 3-е лицо множественного числа, где отрицание {\slv{не}} пишется раздельно: {\slv{не сꙋ́ть}}.
 
-                    \paragraph{Упражнение}
+                    \paragraph{\exercise}
 
     Поставьте приведенные в скобках слова в соответствующую форму.
     
@@ -1450,7 +1477,7 @@
 
     В этом последнем случае губной звук {\slv{м}} смягчается плавным звуком {\slv{л}}.
 
-                    \paragraph{Упражнение}
+                    \paragraph{\exercise}
     
     Восстановите в нижеследующих примерах правильные окончания церковнославянских глаголов. В скобках приведена неопределенная форма соответствующих глаголов. Правильность выполнения проверьте по церковнославянскому тексту, ссылки на который приводятся в конце каждого предложения.
     
@@ -1595,7 +1622,7 @@
 
     Оно используется преимущественно для всякого рода описаний. В этом времени написаны, например, описание земли в начале сотворения мира (Быт. 1, 2) и описание Овчей купели в Евангелии от Иоанна (Ин. 5, 2--4). Более понятной его функция станет ниже, когда мы познакомимся с \emph{аористом}.
     
-                    \paragraph{Упражнение}
+                    \paragraph{\exercise}
 
     Поставьте приведенные в скобках церковнославянские слова в соответствующую форму преходящего времени. Правильность решения можно проверить, обратившись к церковнославянскому тексту. Ответ считается правильным, если приведена одна из форм, перечисленных в таблице выше. Например, если в тексте написано {\slv{бѧ́хомъ}}, а обучающийся написал {\slv{бѣ́хомъ}}, ответ считается правильным, так как в таблице это две равноправные формы 1-го лица множественного числа.
     
@@ -1717,7 +1744,7 @@
         {{\slv{Бы́сть же во дни̑ ты̑ѧ}} (Лк. 2, 1) (Случилось же в те дни)}
     }
 
-                    \paragraph{Упражнение}
+                    \paragraph{\exercise}
 
     Поставьте приведенные в скобках церковнославянские слова в соответствующую форму аориста.
     
@@ -1829,7 +1856,7 @@
 
     Суть явления здесь состоит в том, что глагол {\slv{бы́ти}}, сам по себе обозначающий \textbf{состояние}, через форму аориста приобратает значение \textbf{события}, а конкретный русский перевод (стать, превратиться и т.д.) зависит уже от контекста. После этого необходимого пояснения выполним упражнение 11, которое поможет уяснить рассмотренное различие.
 
-                    \paragraph{Упражнение}
+                    \paragraph{\exercise}
 
     Поставьте приведенные в скобках церковнославянские слова в соответствующую форму преходящего времени или аориста.
     
@@ -1930,7 +1957,7 @@
     
     От глаголов {\slv{ꙗ҆́ти}} и {\slv{клѧ́ти}} преходящее время будет: {\slv{є҆́млѧхъ, кленѧ́хъ}}.
 
-                    \paragraph{Упражнение}
+                    \paragraph{\exercise}
                     
     Поставьте приведенные в скобках церковнославянские слова в соответствующую форму преходящего времени. Русский глагол пропускается. (Русский текст приводится по переводу П. Юнгерова).
     
@@ -2110,7 +2137,7 @@
         \end{tabular}
     \end{center}
 
-                    \bigskip\paragraph{Упражнение}
+                    \bigskip\paragraph{\exercise}
 
 Поставьте приведенные в скобках церковнославянские слова в соответствующую форму аориста. Русский глагол пропускается.
     
@@ -2158,7 +2185,7 @@
     
     11. И \textbf{отверг} ({\slv{ѿри́нꙋти}}) селение Иосифа и колена Ефремова не \textbf{избрал} ({\slv{и҆збра́ти}}) (Пс. 77, 67).
     
-                    \paragraph{Упражнение}
+                    \paragraph{\exercise}
                     
     Поставьте приведенные в скобках церковнославянские слова в соответствующую форму преходящего времени или аориста.
     
@@ -2186,7 +2213,7 @@
     
     И аще что яко человецы плоть носяще, и в мире живуще, от диавола \textbf{прельстишаяся}. Аще же в слове или в деле или в ведении или в неведении, или слово священническое \textbf{попраша}, или под клятвою священническом \textbf{быша}, или под свою анафему \textbf{падоша}, или под клятву ведошася, Сам яко благ и незлобивый Владыко, сия рабы Твоя словом разрешися благоволи (Требник. М., 1991, с. 76).
 
-                    \paragraph{Упражнение}
+                    \paragraph{\exercise}
                     
     В приведенном ниже церковнославянском тексте замените формы выделенных глаголов, стоящих во единственном числе, на соответствующие формы множественного числа (подобные случаи нередко встречаются в богослужебной практике):
     
@@ -2686,7 +2713,7 @@
 
     \addtocounter{paragraph}{1} % Following the original typo.
     
-                    \bigskip\paragraph{Упражнение}
+                    \bigskip\paragraph{\exercise}
     
     В приведенных предложениях замените выделенный глагол на соответствующую форму церковнославянского глагола {\slv{вѣ́дѣти}}.
     
@@ -2728,7 +2755,7 @@
     
     8. Слышала ли ты, что Адония, сын Аггифин, сделался царем, а господин наш Давид не \textbf{знает} о том? (3 Цар. 1, 11).
     
-                \paragraph{Упражнение}
+                \paragraph{\exercise}
 
     В приведенных предложениях замените выделенный глагол на соответствующую форму церковнославянского глагола {\slv{ꙗ҆́сти}}.
     
@@ -2770,7 +2797,7 @@
     
     8. И сказал Моисей: \textbf{ешьте} его сегодня, ибо сегодня суббота Господня; сегодня не найдете его на поле (Исх. 16, 25).
     
-                        \paragraph{Упражнение}
+                        \paragraph{\exercise}
 
     В приведенных предложениях замените выделенный глагол на соответствующую форму церковнославянского глагола {\slv{и҆мѣ́ти}}.
     
@@ -2812,7 +2839,7 @@
     
     8. Велик он и не \textbf{имеет} конца, высок и неизмерим (Вар. 3, 25).
     
-                    \medskip\paragraph{Упражнение}
+                    \medskip\paragraph{\exercise}
                     
     В приведенных предложениях замените выделенный глагол на соответствующую форму церковнославянского глагола {\slv{да́ти}}.
     
@@ -4307,7 +4334,11 @@
 
     \chapter*{2-й класс}
     \label{ch:secondgrade}
-    \addcontentsline{toc}{chapter}{\nameref{ch:secondgrade}}
+    \addcontentsline{toc}{chapter}{\nameref*{ch:secondgrade}}
+    
+    %% Ensures correct hyperref links. See the Preamble
+    \renewcommand*{\ChapterAnchorPrefix}{2G}
+    
     \setcounter{section}{0}
     \setcounter{subsubsection}{0}
         \section{Склоняемые части речи}
@@ -5062,7 +5093,7 @@
     
     Д. {\slv{и҆̀мже}} во всех родах и т.д.
 
-                    \paragraph{Упражнение}
+                    \paragraph{\exercise}
 
     В приведенных ниже предложениях замените формы местоимений 3-го лица мужского рода на соответствующие формы женского рода:
     
