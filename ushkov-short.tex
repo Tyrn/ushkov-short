@@ -174,8 +174,9 @@
 
 %%\/ A tiny toolbox \/%%
 
+\newfontfamily{\mock}[Scale=MatchLowercase]{DejaVu Serif Condensed Italic}
 %% Style for mock items
-\newcommand{\mockitem}[1]{\texttt{#1}}
+\newcommand{\mockitem}[1]{{\mock{#1}}}
 
 %% Suppress \paragraph{title} on demand
 \newcommand{\exercise}{}
