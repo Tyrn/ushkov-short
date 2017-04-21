@@ -4,7 +4,7 @@
 
 %\usepackage{adjustbox}
 %\usepackage{showframe}
-\usepackage{changepage}
+%\usepackage{changepage}
 \usepackage{datetime2}
 \usepackage{longtable}
 \usepackage{makecell}
@@ -177,6 +177,75 @@
     \endgroup}
 
 %%/\ Borrowed from titlepages by Peter Wilson /\%%
+
+%%\/ placedtabular courtesy of Skillmon \/%%
+
+\usepackage{pgfkeys}
+
+\makeatletter
+\newif\if@placedleft
+\newif\if@placedright
+\newif\if@placedmiddle
+\newif\if@placedcapused
+\newif\if@placedscapused
+%\newif\if@placedlabused
+\newdimen\@placedpadding
+\pgfkeys{/placedt/.is family,/placedt,
+    default/.style={%
+        place=left,
+        stretch=1.4,
+        padding=1cm,
+    },
+    stretch/.estore in=\arraystretch,
+    place/.is choice,
+    place/left/.code=\@placedlefttrue\@placedrightfalse\@placedmiddlefalse,
+    place/right/.code=\@placedrighttrue\@placedleftfalse\@placedmiddlefalse,
+    place/middle/.code=\@placedmiddletrue\@placedleftfalse\@placedrightfalse,
+    padding/.estore in=\@placedpadding,
+    caption/.code=\@placedcapusedtrue\def\@placedcap{#1},
+    scaption/.code=\@placedscapusedtrue\def\@placedscap{#1},
+}
+
+\newenvironment{placedtabular}[2][]{%
+    \par\medskip\noindent\begin{minipage}{\textwidth}%
+        \pgfkeys{/placedt, default, #1}%
+        \if@placedleft%
+        \newdimen\@placedrest%
+        \@placedrest=\textwidth%
+        \advance\@placedrest by -\@placedpadding%
+        \hskip\@placedpadding%
+        \begin{minipage}{\@placedrest}%
+            \raggedright%
+            \else\if@placedmiddle%
+            \centering%
+            \else\if@placedright%
+            \newdimen\@placedrest%
+            \@placedrest=\textwidth%
+            \advance\@placedrest by -\@placedpadding%
+            \begin{minipage}{\@placedrest}%
+                \raggedleft%
+                \fi\fi\fi%
+                \if@placedcapused%
+                \refstepcounter{table}%
+                \@placedcap%
+                \if@placedscapused%
+                \addcontentsline{lot}{table}{\@placedscap}%
+                \else%
+                \addcontentsline{lot}{table}{\@placedcap}%
+                \fi%
+                \\[0.2\baselineskip]%
+                \fi%
+                \footnotesize\begin{tabular}{#2}%
+                }{
+                \end{tabular}%
+                \if@placedmiddle\else%
+            \end{minipage}%
+            \fi%
+        \end{minipage}%
+    }
+    \makeatother
+
+%%/\ placedtabular courtesy of Skillmon /\%%
 
 %%\/ A tiny toolbox \/%%
 
@@ -1308,51 +1377,49 @@
 
     Важное значение глагола {\slv{бы́ти}} среди других глаголов, как глагола вспомогательного, заставляет изучать его спряжение прежде спряжения других глаголов.
 
-    \begin{adjustwidth}{\hstba}{0cm}
-%        \raggedright{\tabcaptsize Спряжение глагола {\slv{бы́ти}} в настоящем времени}
-        \renewcommand*{\arraystretch}{1.2}
-        \begin{tabular}[c]{|c|c|c|c|c|}
-            \hline
+    \begin{placedtabular}[%
+        caption={\tabcaptsize Спряжение глагола {\slv{бы́ти}} в настоящем времени}
+        ]{|c|c|c|c|c|}
+        \hline
 
-            \multirow{2}{*}{\spheading[2em]{\scriptsize{Лицо}}}
-            & \multirow{2}{*}{\mkcella{Единственное\\число}}
-            & \multicolumn{2}{c|}{\mkcella{Двойственное число}}
-            & \multirow{2}{*}{\mkcella{Множественное\\число}}
-            \\
-            
-            \cline{3-4}
-            
-            &
-            & \mkcella{Мужской род}
-            & \mkcella{Жен. и сред. род}
-            &
-            \\
-            
-            \hline
-            
-            1
-            & \makecell{{\footnotesize\slv{а҆́зъ}} {\slv{є҆́смь}}}
-            & \makecell{{\footnotesize\slv{мы̀}} {\slv{є҆сва́}}\\({\scriptsize или} {\slv{є҆сма̀}})}
-            & \makecell{{\footnotesize\slv{мы̀}} {\slv{є҆свѣ̀}}}
-            & \makecell{{\footnotesize\slv{мы̀}} {\slv{є҆смы̀}}}
-            \\\hline
-            
-            2
-            & \makecell{{\footnotesize\slv{ты̀}} {\slv{є҆сѝ}}}
-            & \makecell{{\footnotesize\slv{вы̀}} {\slv{є҆ста̀}}}
-            & \makecell{{\footnotesize\slv{вы̀}} {\slv{є҆стѣ̀}}}
-            & \makecell{{\footnotesize\slv{вы̀}} {\slv{є҆стѐ}}}
-            \\\hline
-            
-            3
-            & \makecell{{\footnotesize\slv{ѻ҆́нъ, ѻ҆на̀, ѻ҆но̀}}\\{\slv{є҆́сть}}}
-            & \makecell{{\footnotesize\slv{ѻ҆́на}} {\slv{є҆ста̀}}}
-            & \makecell{{\footnotesize\slv{ѻ҆́нѣ}} {\slv{є҆стѣ̀}}}
-            & \makecell{{\footnotesize\slv{ѻ҆нѝ, ѻ҆нѣ̀, ѻ҆нѝ}}\\{\slv{сꙋ́ть}}}
-            \\\hline
+        \multirow{2}{*}{\spheading[2em]{\scriptsize{Лицо}}}
+        & \multirow{2}{*}{\mkcella{Единственное\\число}}
+        & \multicolumn{2}{c|}{\mkcella{Двойственное число}}
+        & \multirow{2}{*}{\mkcella{Множественное\\число}}
+        \\
         
-        \end{tabular}
-    \end{adjustwidth}
+        \cline{3-4}
+        
+        &
+        & \mkcella{Мужской род}
+        & \mkcella{Жен. и сред. род}
+        &
+        \\
+        
+        \hline
+        
+        1
+        & \makecell{{\footnotesize\slv{а҆́зъ}} {\slv{є҆́смь}}}
+        & \makecell{{\footnotesize\slv{мы̀}} {\slv{є҆сва́}}\\({\scriptsize или} {\slv{є҆сма̀}})}
+        & \makecell{{\footnotesize\slv{мы̀}} {\slv{є҆свѣ̀}}}
+        & \makecell{{\footnotesize\slv{мы̀}} {\slv{є҆смы̀}}}
+        \\\hline
+        
+        2
+        & \makecell{{\footnotesize\slv{ты̀}} {\slv{є҆сѝ}}}
+        & \makecell{{\footnotesize\slv{вы̀}} {\slv{є҆ста̀}}}
+        & \makecell{{\footnotesize\slv{вы̀}} {\slv{є҆стѣ̀}}}
+        & \makecell{{\footnotesize\slv{вы̀}} {\slv{є҆стѐ}}}
+        \\\hline
+        
+        3
+        & \makecell{{\footnotesize\slv{ѻ҆́нъ, ѻ҆на̀, ѻ҆но̀}}\\{\slv{є҆́сть}}}
+        & \makecell{{\footnotesize\slv{ѻ҆́на}} {\slv{є҆ста̀}}}
+        & \makecell{{\footnotesize\slv{ѻ҆́нѣ}} {\slv{є҆стѣ̀}}}
+        & \makecell{{\footnotesize\slv{ѻ҆нѝ, ѻ҆нѣ̀, ѻ҆нѝ}}\\{\slv{сꙋ́ть}}}
+        \\\hline
+    
+    \end{placedtabular}
 
     \bigskip
     Если при глаголе {\slv{бы́ти}} находится отрицание {\slv{не}},то в настоящем времени {\slv{не}} и {\slv{є҆́смь}} сливаются. Происходит так называемое \emph{стяжание} двух звуков {\slv{е}}. При стяжании двойной звук {\slv{ее}} переходит в {\slv{ѣ}}, и образуется слово {\slv{нѣсмь}}. В таком положении глагол {\slv{бы́ти}} с отрицанием {\slv{не}} и спрягается в настоящем времени во всех лицах и числах: {\slv{нѣ́смь, нѣ́си, нѣ́сть}}\ldots~{\slv{нѣ́смы, нѣ́сте}}\ldots~Исключение из этого правила составляет только 3-е лицо множественного числа, где отрицание {\slv{не}} пишется раздельно: {\slv{не сꙋ́ть}}.
