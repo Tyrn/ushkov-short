@@ -189,6 +189,7 @@
 \newif\if@placedcapused
 \newif\if@placedscapused
 %\newif\if@placedlabused
+\newif\if@placedshrunkused
 \newdimen\@placedpadding
 \pgfkeys{/placedt/.is family,/placedt,
     default/.style={%
@@ -204,6 +205,7 @@
     padding/.estore in=\@placedpadding,
     caption/.code=\@placedcapusedtrue\def\@placedcap{#1},
     scaption/.code=\@placedscapusedtrue\def\@placedscap{#1},
+    shrunk/.code=\@placedshrunkusedtrue\def\@placedshrunk{#1},
 }
 
 \newenvironment{placedtabular}[2][]{%
@@ -235,7 +237,11 @@
                 \fi%
                 \\[0.2\baselineskip]%
                 \fi%
+                \if@placedshrunkused%
                 \footnotesize\begin{tabular}{#2}%
+                \else%
+                \normalsize\begin{tabular}{#2}%
+                \fi%
                 }{
                 \end{tabular}%
                 \if@placedmiddle\else%
@@ -1192,7 +1198,7 @@
     Важное значение глагола {\slv{бы́ти}} среди других глаголов, как глагола вспомогательного, заставляет изучать его спряжение прежде спряжения других глаголов.
 
     \medskip\begin{placedtabular}[%
-%        caption={\tabcaptsize Спряжение глагола {\slv{бы́ти}} в настоящем времени}
+        caption={\tabcaptsize Спряжение глагола {\slv{бы́ти}} в настоящем времени}
         ]{|c|c|c|c|c|}
         \hline
 
