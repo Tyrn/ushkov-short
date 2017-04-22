@@ -181,15 +181,14 @@
 %%\/ placedtabular courtesy of Skillmon \/%%
 
 \usepackage{pgfkeys}
-
 \makeatletter
 \newif\if@placedleft
 \newif\if@placedright
 \newif\if@placedmiddle
 \newif\if@placedcapused
 \newif\if@placedscapused
-%\newif\if@placedlabused
-\newif\if@placedshrunkused
+\newif\if@placedfontused
+\newif\if@placedcfontused
 \newdimen\@placedpadding
 \pgfkeys{/placedt/.is family,/placedt,
     default/.style={%
@@ -205,7 +204,10 @@
     padding/.estore in=\@placedpadding,
     caption/.code=\@placedcapusedtrue\def\@placedcap{#1},
     scaption/.code=\@placedscapusedtrue\def\@placedscap{#1},
-    shrunk/.code=\@placedshrunkusedtrue\def\@placedshrunk{#1},
+    font/.store in=\@placedfont,
+    captionfont/.store in=\@placedcapfont,
+    font/.code=\@placedfontusedtrue\def\@placedfont{#1},
+    captionfont/.code=\@placedcfontusedtrue\def\@placedcapfont{#1},
 }
 
 \newenvironment{placedtabular}[2][]{%
@@ -228,8 +230,7 @@
                 \raggedleft%
                 \fi\fi\fi%
                 \if@placedcapused%
-                \refstepcounter{table}%
-                \@placedcap%
+                {\if@placedcfontused\normalsize\normalfont\@placedcapfont\fi\@placedcap}%
                 \if@placedscapused%
                 \addcontentsline{lot}{table}{\@placedscap}%
                 \else%
@@ -237,11 +238,8 @@
                 \fi%
                 \\[0.2\baselineskip]%
                 \fi%
-                \if@placedshrunkused%
-                \footnotesize\begin{tabular}{#2}%
-                \else%
-                \normalsize\begin{tabular}{#2}%
-                \fi%
+                \if@placedfontused\normalsize\normalfont\@placedfont\fi%
+                \begin{tabular}{#2}%
                 }{
                 \end{tabular}%
                 \if@placedmiddle\else%
@@ -270,6 +268,9 @@
 
 %% Table caption size
 \newcommand{\tabcaptsize}{\footnotesize}
+
+%% Shrunken table size
+\newcommand{\shrunkensize}{\footnotesize}
 
 %% Some fixed horizontal spaces
 \newcommand{\hstba}{1cm}
@@ -2992,7 +2993,7 @@
     
     \begin{placedtabular}[%
 %        caption={\tabcaptsize Склонения существительных {\slv{сы́нъ, ра́бъ, дꙋ́хъ, проро́къ, лѣ́то}}}
-        ,shrunk
+        font=\shrunkensize
         ]{|c|c|c|c|c|c|c|}
         \hline
         
@@ -3882,7 +3883,7 @@
     
     \begin{placedtabular}[%
 %        caption={\tabcaptsize Склонение краткого имени прилагательного {\slv{то́щь}}}
-        ,shrunk
+        font=\shrunkensize
         ]{|c|c|c|c|c|}
         \hline
         
@@ -4411,7 +4412,7 @@
 
     \medskip\begin{placedtabular}[%
 %        caption={\tabcaptsize Склонение существительных с наращением {\slv{-ен-}}}
-        ,shrunk
+        font=\shrunkensize
         ]{|c|c|c|c|c|c|}
         \hline
         
@@ -5089,7 +5090,7 @@
     
     \begin{placedtabular}[%
 %        caption={\tabcaptsize Склонение определительного местоимения {\slv{ве́сь}}}
-        ,shrunk
+        font=\shrunkensize
         ]{|c|c|c|c|c|c|c|c|}
         \hline
         
@@ -5284,7 +5285,7 @@
 
     \medskip\begin{placedtabular}[%
 %        caption={\tabcaptsize Склонение указательного местоимения {\slv{то́й}}}
-        ,shrunk
+        font=\shrunkensize
         ]{|c|c|c|c|c|c|c|c|}
         \hline
         
@@ -5391,7 +5392,7 @@
     
     \begin{placedtabular}[%
 %        caption={\tabcaptsize Склонение указательного местоимения {\slv{ѻ҆́нъ, ѻ҆́ный}}}
-        ,shrunk
+        font=\shrunkensize
         ]{|c|c|c|c|c|c|c|c|}
         \hline
         \multirow{2}{*}{\makecell{Па-\\деж}}
@@ -5648,7 +5649,7 @@
     
     \medskip\begin{placedtabular}[%
         caption={\tabcaptsize Полное имя прилагательное с основой на шипящий звук {\slv{то́щїй}}}
-        ,shrunk
+        ,font=\shrunkensize
         ]{|c|c|c|c|c|c|c|c|}
         \hline
         \multirow{2}{*}{\makecell{Па-\\деж}}
@@ -5733,7 +5734,7 @@
     
     \begin{placedtabular}[%
 %        caption={\tabcaptsize Полное имя прилагательное {\slv{ве́лїй}}}
-        ,shrunk
+        font=\shrunkensize
         ]{|c|c|c|c|c|c|c|}
         \hline
         \multirow{2}{*}{\makecell{Па-\\деж}}
@@ -5991,7 +5992,7 @@
     
     Имена числительные {\slv{два̀}} и {\slv{ѻ҆́ба}} по своему значению имеют только двойственное число.
     
-    \begin{placedtabular}[%
+    \medskip\begin{placedtabular}[%
 %        caption={\tabcaptsize Числительные {\slv{два̀}} и {\slv{ѻ҆́ба}}}
         ]{|c|c|c|c|c|c|}
         \hline
@@ -6226,56 +6227,54 @@
     
     Вот образец спряжения вспомогательного глагола {\slv{бы́ти}} и тематического глагола {\slv{твори́ти}} в прошедшем совершенном времени.
 
-    \medskip\begin{adjustwidth}{\hstba}{0cm}
-%        \raggedright{\tabcaptsize Спряжение вспомогательного глагола {\slv{бы́ти}} и тематического глагола {\slv{твори́ти}} в прошедшем совершенном времени}
-        \renewcommand*{\arraystretch}{1.2}
-        \begin{tabular}[c]{|c|c|c|}
-            
-            \hline
-            \mkcella{Лицо}
-            & \mkcella{Единственное число}
-            & \mkcella{Множественное число}
-            \\\hline
-            
-            \mkcella{1}
-            & \makecell[l]{{\slv{бы́лъ, -а̀, -о, є҆́смь}}\\{\slv{твори́лъ, -а, -о, є҆́смь}}}
-            & \makecell[l]{{\slv{бы́ли є҆смы̀}}\\{\slv{твори́ли є҆смы̀}}}
-            \\\hline
-            
-            \mkcella{2}
-            & \makecell[l]{{\slv{бы́лъ, -а̀, -о, є҆сѝ}}\\{\slv{твори́лъ, -а̀, -о, є҆сѝ}}}
-            & \makecell[l]{{\slv{бы́ли є҆стѐ}}\\{\slv{твори́ли є҆стѐ}}}
-            \\\hline
+    \medskip\begin{placedtabular}[%
+%        caption={\tabcaptsize Спряжение вспомогательного глагола {\slv{бы́ти}} и тематического глагола {\slv{твори́ти}} в прошедшем совершенном времени}
+        ]{|c|c|c|}
+        
+        \hline
+        \mkcella{Лицо}
+        & \mkcella{Единственное число}
+        & \mkcella{Множественное число}
+        \\\hline
+        
+        \mkcella{1}
+        & \makecell[l]{{\slv{бы́лъ, -а̀, -о, є҆́смь}}\\{\slv{твори́лъ, -а, -о, є҆́смь}}}
+        & \makecell[l]{{\slv{бы́ли є҆смы̀}}\\{\slv{твори́ли є҆смы̀}}}
+        \\\hline
+        
+        \mkcella{2}
+        & \makecell[l]{{\slv{бы́лъ, -а̀, -о, є҆сѝ}}\\{\slv{твори́лъ, -а̀, -о, є҆сѝ}}}
+        & \makecell[l]{{\slv{бы́ли є҆стѐ}}\\{\slv{твори́ли є҆стѐ}}}
+        \\\hline
 
-            \mkcella{3}
-            & \makecell[l]{{\slv{бы́лъ, -а̀, -о, є҆́сть}}\\{\slv{твори́л, -а̀, -о, є҆́сть}}}
-            & \makecell[l]{{\slv{бы́ли сꙋ́ть}}\\{\slv{твори́ли сꙋ́ть}}}
-            \\\hline
-            
-            \multicolumn{3}{|c|}{\mkcella{Двойственное число}}
-            \\\hline
-            
-            \multicolumn{2}{|c|}{\mkcella{Мужской род}}
-            & \multicolumn{1}{c|}{\mkcella{Жен. и сред. род}}
-            \\\hline
-            
-            \mkcella{1}
-            & \makecell[l]{{\slv{бы́ла є҆сва̀}} ({\slv{є҆сма̀}})\\{\slv{твори̑ла є҆сва̀}} ({\slv{є҆сма̀}})}
-            & \makecell[l]{{\slv{бы̑ли є҆свѣ̀}}\\{\slv{твори̑ли е҆свѣ̀}}}
-            \\\hline
-            
-            \mkcella{2}
-            & \multirow{2}{*}{\makecell[l]{{\slv{бы́ла є҆ста̀}}\\{\slv{твори̑ла̀ є҆ста̀}}}}
-            & \multirow{2}{*}{\makecell[l]{{\slv{бы̑ли є҆стѣ̀}}\\{\slv{твори̑ли є҆стѣ̀}}}}
-            \\\cline{1-1}
-            
-            \mkcella{3}
-            &
-            &
-            \\\hline
+        \mkcella{3}
+        & \makecell[l]{{\slv{бы́лъ, -а̀, -о, є҆́сть}}\\{\slv{твори́л, -а̀, -о, є҆́сть}}}
+        & \makecell[l]{{\slv{бы́ли сꙋ́ть}}\\{\slv{твори́ли сꙋ́ть}}}
+        \\\hline
+        
+        \multicolumn{3}{|c|}{\mkcella{Двойственное число}}
+        \\\hline
+        
+        \multicolumn{2}{|c|}{\mkcella{Мужской род}}
+        & \multicolumn{1}{c|}{\mkcella{Жен. и сред. род}}
+        \\\hline
+        
+        \mkcella{1}
+        & \makecell[l]{{\slv{бы́ла є҆сва̀}} ({\slv{є҆сма̀}})\\{\slv{твори̑ла є҆сва̀}} ({\slv{є҆сма̀}})}
+        & \makecell[l]{{\slv{бы̑ли є҆свѣ̀}}\\{\slv{твори̑ли е҆свѣ̀}}}
+        \\\hline
+        
+        \mkcella{2}
+        & \multirow{2}{*}{\makecell[l]{{\slv{бы́ла є҆ста̀}}\\{\slv{твори̑ла̀ є҆ста̀}}}}
+        & \multirow{2}{*}{\makecell[l]{{\slv{бы̑ли є҆стѣ̀}}\\{\slv{твори̑ли є҆стѣ̀}}}}
+        \\\cline{1-1}
+        
+        \mkcella{3}
+        &
+        &
+        \\\hline
 
-        \end{tabular}
-    \end{adjustwidth}
+    \end{placedtabular}
 
                 \subsubsection{Давнопрошедшее время глаголов}
                 
@@ -6291,56 +6290,54 @@
     
     Возьмем за образцы спряжения те же глаголы {\slv{бы́ти}} и {\slv{твори́ти}}.
     
-    \medskip\begin{adjustwidth}{\hstba}{0cm}
-        \raggedright{\tabcaptsize Давнопрошедшее время глаголов {\slv{бы́ти}} и {\slv{твори́ти}}}
-        \renewcommand*{\arraystretch}{1.2}
-        \begin{tabular}[c]{|c|c|c|}
-            
-            \hline
-            \mkcella{Лицо}
-            & \mkcella{Единственное число}
-            & \mkcella{Множественное число}
-            \\\hline
-            
-            \mkcella{1}
-            & \makecell[l]{{\slv{бы́лъ, -а̀, -о бѧ́хъ, бѣ́хъ}}\\{\slv{твори́лъ, -а, -о бѧ́хъ, бѣ́хъ}}}
-            & \makecell[l]{{\slv{бы́ли бѧ́хомъ, бѣ́хомъ}}\\{\slv{твори́ли бѧ́хомъ, бѣ́хомъ}}}
-            \\\hline
-            
-            \mkcella{2}
-            & \makecell[l]{{\slv{бы́лъ, -а̀, -о бѣ̀}}\\{\slv{твори́лъ, -а̀, -о бѣ̀}}}
-            & \makecell[l]{{\slv{бы́ли бѧ́сте, бѣ́сте}}\\{\slv{твори́ли бѧ́сте, бѣ́сте}}}
-            \\\hline
-            
-            \mkcella{3}
-            & \makecell[l]{{\slv{бы́лъ, -а̀, -о бѧ́ше, бѣ̀}}\\{\slv{твори́л, -а̀, -о бѧ́ше, бѣ̀}}}
-            & \makecell[l]{{\slv{бы́ли бѧ́хꙋ, бѣ́хꙋ, бѣ́ша}}\\{\slv{твори́ли бѧ́хꙋ, бѣ́хꙋ, бѣша̀}}}
-            \\\hline
-            
-            \multicolumn{3}{|c|}{\mkcella{Двойственное число}}
-            \\\hline
-            
-            \multicolumn{2}{|c|}{\mkcella{Мужской род}}
-            & \multicolumn{1}{c|}{\mkcella{Жен. и сред. род}}
-            \\\hline
-            
-            \mkcella{1}
-            & \makecell[l]{{\slv{бы́ла бѧ́хова, бѣ́хова}}\\{\slv{твори̑ла бѧ́хова, бѣ́хова}}}
-            & \makecell[l]{{\slv{бы̑ли бѧ́ховѣ, бѣ́ховѣ}}\\{\slv{твори̑ли бѧ́ховѣ, бѣ́ховѣ}}}
-            \\\hline
-            
-            \mkcella{2}
-            & \multirow{2}{*}{\makecell[l]{{\slv{бы́ла бѧ́ста, бѣ́ста}}\\{\slv{твори̑ла бѧ́ста, бѣ́ста}}}}
-            & \multirow{2}{*}{\makecell[l]{{\slv{бы̑ли бѧ́стѣ, бѣ́стѣ}}\\{\slv{твори̑ла бѧ́стѣ, бѣ́стѣ}}}}
-            \\\cline{1-1}
-            
-            \mkcella{3}
-            &
-            &
-            \\\hline
-            
-        \end{tabular}
-    \end{adjustwidth}
+    \medskip\begin{placedtabular}[%
+%        caption={\tabcaptsize Давнопрошедшее время глаголов {\slv{бы́ти}} и {\slv{твори́ти}}}
+        ]{|c|c|c|}
+        
+        \hline
+        \mkcella{Лицо}
+        & \mkcella{Единственное число}
+        & \mkcella{Множественное число}
+        \\\hline
+        
+        \mkcella{1}
+        & \makecell[l]{{\slv{бы́лъ, -а̀, -о бѧ́хъ, бѣ́хъ}}\\{\slv{твори́лъ, -а, -о бѧ́хъ, бѣ́хъ}}}
+        & \makecell[l]{{\slv{бы́ли бѧ́хомъ, бѣ́хомъ}}\\{\slv{твори́ли бѧ́хомъ, бѣ́хомъ}}}
+        \\\hline
+        
+        \mkcella{2}
+        & \makecell[l]{{\slv{бы́лъ, -а̀, -о бѣ̀}}\\{\slv{твори́лъ, -а̀, -о бѣ̀}}}
+        & \makecell[l]{{\slv{бы́ли бѧ́сте, бѣ́сте}}\\{\slv{твори́ли бѧ́сте, бѣ́сте}}}
+        \\\hline
+        
+        \mkcella{3}
+        & \makecell[l]{{\slv{бы́лъ, -а̀, -о бѧ́ше, бѣ̀}}\\{\slv{твори́л, -а̀, -о бѧ́ше, бѣ̀}}}
+        & \makecell[l]{{\slv{бы́ли бѧ́хꙋ, бѣ́хꙋ, бѣ́ша}}\\{\slv{твори́ли бѧ́хꙋ, бѣ́хꙋ, бѣша̀}}}
+        \\\hline
+        
+        \multicolumn{3}{|c|}{\mkcella{Двойственное число}}
+        \\\hline
+        
+        \multicolumn{2}{|c|}{\mkcella{Мужской род}}
+        & \multicolumn{1}{c|}{\mkcella{Жен. и сред. род}}
+        \\\hline
+        
+        \mkcella{1}
+        & \makecell[l]{{\slv{бы́ла бѧ́хова, бѣ́хова}}\\{\slv{твори̑ла бѧ́хова, бѣ́хова}}}
+        & \makecell[l]{{\slv{бы̑ли бѧ́ховѣ, бѣ́ховѣ}}\\{\slv{твори̑ли бѧ́ховѣ, бѣ́ховѣ}}}
+        \\\hline
+        
+        \mkcella{2}
+        & \multirow{2}{*}{\makecell[l]{{\slv{бы́ла бѧ́ста, бѣ́ста}}\\{\slv{твори̑ла бѧ́ста, бѣ́ста}}}}
+        & \multirow{2}{*}{\makecell[l]{{\slv{бы̑ли бѧ́стѣ, бѣ́стѣ}}\\{\slv{твори̑ла бѧ́стѣ, бѣ́стѣ}}}}
+        \\\cline{1-1}
+        
+        \mkcella{3}
+        &
+        &
+        \\\hline
+        
+    \end{placedtabular}
 
                 \subsubsection{Условное наклонение глаголов}
 
@@ -6358,62 +6355,61 @@
     
     Возьмем для спряжения те же глаголы {\slv{бы́ти}} и {\slv{твори́ти}}.
     
-    \medskip\begin{adjustwidth}{\hstba}{0cm}
-        \raggedright{\tabcaptsize Условное наклонение глаголов {\slv{бы́ти}} и {\slv{твори́ти}}}
-        \renewcommand*{\arraystretch}{1.2}
-        \begin{tabular}[c]{|c|c|c|}
-            
-            \hline
-            \mkcella{Лицо}
-            & \mkcella{Единственное число}
-            & \mkcella{Множественное число}
-            \\\hline
-            
-            \mkcella{1}
-            & \makecell[l]{{\slv{бы́лъ, -а̀, -о бы́хъ}}\\{\slv{твори́лъ, -а, -о бы́хъ}}}
-            & \makecell[l]{{\slv{бы́ли бы́хомъ}}\\{\slv{твори́ли бы́хомъ}}}
-            \\\hline
-            
-            \mkcella{2}
-            & \makecell[l]{{\slv{бы́лъ, -а̀, -о бы̀}}\\{\slv{твори́лъ, -а̀, -о бы̀}}}
-            & \makecell[l]{{\slv{бы́ли бы́сте}}\\{\slv{твори́ли бы́сте}}}
-            \\\hline
-            
-            \mkcella{3}
-            & \makecell[l]{{\slv{бы́лъ, -а̀, -о бы̀}}\\{\slv{твори́л, -а̀, -о бы̀}}}
-            & \makecell[l]{{\slv{бы́ли бы́ша}}\\{\slv{твори́ли бы́ша}}}
-            \\\hline
-            
-            \multicolumn{3}{|c|}{\mkcella{Двойственное число}}
-            \\\hline
-            
-            \multicolumn{2}{|c|}{\mkcella{Мужской род}}
-            & \multicolumn{1}{c|}{\mkcella{Жен. и сред. род}}
-            \\\hline
-            
-            \mkcella{1}
-            & \makecell[l]{{\slv{бы́ла бы́хова, бы́сва}}\\{\slv{твори̑ла бы́хова, бы́сва}}}
-            & \makecell[l]{{\slv{бы̑ли бы́ховѣ, бы́свѣ}}\\{\slv{твори̑ла бы́ховѣ, бы́свѣ}}}
-            \\\hline
-            
-            \mkcella{2}
-            & \multirow{2}{*}{\makecell[l]{{\slv{бы́ла бы́ста}}\\{\slv{твори̑ла бы́ста}}}}
-            & \multirow{2}{*}{\makecell[l]{{\slv{бы̑ли бы́стѣ}}\\{\slv{твори̑ла бы́стѣ}}}}
-            \\\cline{1-1}
-            
-            \mkcella{3}
-            &
-            &
-            \\\hline
-            
-        \end{tabular}
-    \end{adjustwidth}
+    \medskip\begin{placedtabular}[%
+%        caption={\tabcaptsize Условное наклонение глаголов {\slv{бы́ти}} и {\slv{твори́ти}}}
+        ]{|c|c|c|}
+        
+        \hline
+        \mkcella{Лицо}
+        & \mkcella{Единственное число}
+        & \mkcella{Множественное число}
+        \\\hline
+        
+        \mkcella{1}
+        & \makecell[l]{{\slv{бы́лъ, -а̀, -о бы́хъ}}\\{\slv{твори́лъ, -а, -о бы́хъ}}}
+        & \makecell[l]{{\slv{бы́ли бы́хомъ}}\\{\slv{твори́ли бы́хомъ}}}
+        \\\hline
+        
+        \mkcella{2}
+        & \makecell[l]{{\slv{бы́лъ, -а̀, -о бы̀}}\\{\slv{твори́лъ, -а̀, -о бы̀}}}
+        & \makecell[l]{{\slv{бы́ли бы́сте}}\\{\slv{твори́ли бы́сте}}}
+        \\\hline
+        
+        \mkcella{3}
+        & \makecell[l]{{\slv{бы́лъ, -а̀, -о бы̀}}\\{\slv{твори́л, -а̀, -о бы̀}}}
+        & \makecell[l]{{\slv{бы́ли бы́ша}}\\{\slv{твори́ли бы́ша}}}
+        \\\hline
+        
+        \multicolumn{3}{|c|}{\mkcella{Двойственное число}}
+        \\\hline
+        
+        \multicolumn{2}{|c|}{\mkcella{Мужской род}}
+        & \multicolumn{1}{c|}{\mkcella{Жен. и сред. род}}
+        \\\hline
+        
+        \mkcella{1}
+        & \makecell[l]{{\slv{бы́ла бы́хова, бы́сва}}\\{\slv{твори̑ла бы́хова, бы́сва}}}
+        & \makecell[l]{{\slv{бы̑ли бы́ховѣ, бы́свѣ}}\\{\slv{твори̑ла бы́ховѣ, бы́свѣ}}}
+        \\\hline
+        
+        \mkcella{2}
+        & \multirow{2}{*}{\makecell[l]{{\slv{бы́ла бы́ста}}\\{\slv{твори̑ла бы́ста}}}}
+        & \multirow{2}{*}{\makecell[l]{{\slv{бы̑ли бы́стѣ}}\\{\slv{твори̑ла бы́стѣ}}}}
+        \\\cline{1-1}
+        
+        \mkcella{3}
+        &
+        &
+        \\\hline
+        
+    \end{placedtabular}
 
     \bigskip
     Иногда вместо аориста вспомогательного глагола {\slv{бы́ти}} во 2-м лице единственного числа присоединяется тот же глагол в настоящем времени этого лица {\slv{є҆сѝ}}. Тогда форма аориста {\slv{бы̀}} обращается в частицу {\slv{бы}}. Что же касается 3-го лица единственного числа, то в этом случае очень часто форма аориста {\slv{бы̀}} заменяется просто частицей {\slv{бы}} (т.е. пишется без ударения).
     
     Частица {\slv{бы}} может стоять как после глагола, так и перед ним, а также может быть отделена от глагола другими словами.
-
+    \pagebreak
+    
                 \subsubsection{Безличные глаголы}
 
     \textbf{Безличными глаголами} называются такие, которые обозначают действие или состояние без действующего предмета или явления, а как бы сами собою. Например: {\slv{Подоба́етъ бо тлѣ́нномꙋ семꙋ̀ ѡ҆блещи́сѧ въ нетлѣ́нїи}} (1 Кор. 15, 53); {\slv{Не вѣ́сте, что̀ ᲂу҆́трѣ слꙋчи́тсѧ}} (Иак. 4, 14).
@@ -6513,7 +6509,6 @@
     \medskip\autorows{l}{1}{l}{
         \hspca{{\slv{Гдⷭ҇и, что̀ {\large сѧ ᲂу҆мно́жиша} стꙋжа́ющїи мѝ;}} (Пс. 3, 1)}
     }
-    \pagebreak
     
     В некоторых случаях между {\slv{сѧ}} и глаголом могут помещаться в энклитической форме личные местоимения {\slv{мѝ}}, {\slv{тѝ}}, служащие в предложении дополнением, а также союз {\slv{бо}} и частица {\slv{же}}. Например:
     
@@ -6608,43 +6603,41 @@
         \end{tabular}
     \end{adjustwidth}
 
-    \medskip\begin{adjustwidth}{\hstba}{0cm}
-        \renewcommand*{\arraystretch}{1.4}
-        \begin{tabular}[c]{|c|c|c|c|}
-            \hline
-            \multicolumn{2}{|c|}{\mkcella{Мужской род}}
-            & \mkcella{Женский род}
-            & \mkcella{Средний род}
-            \\\hline
-            
-            {\slv{нес{\large ы̀}}}
-            & {\slv{нес{\large ꙋ́щъ}}}
-            & {\slv{нес{\large ꙋ́щи}}}
-            & {\slv{нес{\large ꙋ́ще}}}
-            \\\hline
-            
-            {\slv{бї{\large ѧ̀}}}
-            & {\slv{бї{\large ю́щъ}}}
-            & {\slv{бї{\large ю́щи}}}
-            & {\slv{бї{\large ю́ще}}}
-            \\\hline
-            
-                        
-            {\slv{слы́ш{\large а}}}
-            & {\slv{слы́ш{\large ащъ}}}
-            & {\slv{слы́ш{\large ащи}}}
-            & {\slv{слы́ш{\large аще}}}
-            \\\hline
-            
-                        
-            {\slv{хва́л{\large а}}}
-            & {\slv{хва́л{\large ѧщъ}}}
-            & {\slv{хва́л{\large ѧщи}}}
-            & {\slv{хва́л{\large ѧще}}}
-            \\\hline
+    \medskip\begin{placedtabular}[%
+        ]{|c|c|c|c|}
+        \hline
+        \multicolumn{2}{|c|}{\mkcella{Мужской род}}
+        & \mkcella{Женский род}
+        & \mkcella{Средний род}
+        \\\hline
+        
+        {\slv{нес{\large ы̀}}}
+        & {\slv{нес{\large ꙋ́щъ}}}
+        & {\slv{нес{\large ꙋ́щи}}}
+        & {\slv{нес{\large ꙋ́ще}}}
+        \\\hline
+        
+        {\slv{бї{\large ѧ̀}}}
+        & {\slv{бї{\large ю́щъ}}}
+        & {\slv{бї{\large ю́щи}}}
+        & {\slv{бї{\large ю́ще}}}
+        \\\hline
+        
+                    
+        {\slv{слы́ш{\large а}}}
+        & {\slv{слы́ш{\large ащъ}}}
+        & {\slv{слы́ш{\large ащи}}}
+        & {\slv{слы́ш{\large аще}}}
+        \\\hline
+        
+                    
+        {\slv{хва́л{\large а}}}
+        & {\slv{хва́л{\large ѧщъ}}}
+        & {\slv{хва́л{\large ѧщи}}}
+        & {\slv{хва́л{\large ѧще}}}
+        \\\hline
 
-        \end{tabular}
-    \end{adjustwidth}
+    \end{placedtabular}
     
     \bigskip
     Как видно из приведенной таблицы, краткое причастие мужского рода имеет две формы; одна из них, с окончанием на {\slv{-а}} ({\slv{-ѧ}}), {\slv{ы}}, перешла в русский язык, получив название \emph{деепричастия}, причем окончание {\slv{-ы}} изменилось в \textbf{я} ({\slv{несы̀}} = неся).
@@ -6675,43 +6668,41 @@
         \end{tabular}
     \end{adjustwidth}
     
-    \medskip\begin{adjustwidth}{\hstba}{0cm}
-        \renewcommand*{\arraystretch}{1.4}
-        \begin{tabular}[c]{|c|c|c|c|}
-            \hline
-            \multicolumn{2}{|c|}{\mkcella{Мужской род}}
-            & \mkcella{Женский род}
-            & \mkcella{Средний род}
-            \\\hline
-            
-            {\slv{нес{\large ы́й}}}
-            & {\slv{нес{\large ꙋ́щий}}}
-            & {\slv{нес{\large ꙋ́щаѧ}}}
-            & {\slv{нес{\large ꙋ́щее}}}
-            \\\hline
-            
-            {\slv{бї{\large ѧ́й}}}
-            & {\slv{бї{\large ю́щїй}}}
-            & {\slv{бї{\large ю́щаѧ}}}
-            & {\slv{бї{\large ю́щее}}}
-            \\\hline
-            
-            
-            {\slv{слы́ш{\large ай}}}
-            & {\slv{слы́ш{\large ащїй}}}
-            & {\slv{слы́ш{\large ащаѧ}}}
-            & {\slv{слы́ш{\large ащее}}}
-            \\\hline
-            
-            
-            {\slv{хва́л{\large ѧй}}}
-            & {\slv{хва́л{\large ѧщїй}}}
-            & {\slv{хва́л{\large ѧщаѧ}}}
-            & {\slv{хва́л{\large ѧщее}}}
-            \\\hline
-            
-        \end{tabular}
-    \end{adjustwidth}
+    \medskip\begin{placedtabular}[%
+        ]{|c|c|c|c|}
+        \hline
+        \multicolumn{2}{|c|}{\mkcella{Мужской род}}
+        & \mkcella{Женский род}
+        & \mkcella{Средний род}
+        \\\hline
+        
+        {\slv{нес{\large ы́й}}}
+        & {\slv{нес{\large ꙋ́щий}}}
+        & {\slv{нес{\large ꙋ́щаѧ}}}
+        & {\slv{нес{\large ꙋ́щее}}}
+        \\\hline
+        
+        {\slv{бї{\large ѧ́й}}}
+        & {\slv{бї{\large ю́щїй}}}
+        & {\slv{бї{\large ю́щаѧ}}}
+        & {\slv{бї{\large ю́щее}}}
+        \\\hline
+        
+        
+        {\slv{слы́ш{\large ай}}}
+        & {\slv{слы́ш{\large ащїй}}}
+        & {\slv{слы́ш{\large ащаѧ}}}
+        & {\slv{слы́ш{\large ащее}}}
+        \\\hline
+        
+        
+        {\slv{хва́л{\large ѧй}}}
+        & {\slv{хва́л{\large ѧщїй}}}
+        & {\slv{хва́л{\large ѧщаѧ}}}
+        & {\slv{хва́л{\large ѧщее}}}
+        \\\hline
+        
+    \end{placedtabular}
 
     \bigskip
     Полные причастия настоящего времени склоняются по образцу полных имен прилагательных с основой на шипящие, причем именительный падеж множественного числа будет иметь окончания {\slv{-щїи}} (м. р.), {\slv{-щыѧ}} (ж. р.), {\slv{-щаѧ}} (ср. р.). Например: {\slv{творѧ́щїи}} (м. р.), {\slv{творѧ́щыѧ}} (ж. р.), {\slv{творѧ̑щаѧ}} (ср. р.).
@@ -6722,37 +6713,35 @@
 
     Краткие действительные причастия прошедшего времени образуются от основы неопределенной формы глагола, причем, если основа оканчивается на \textbf{согласный}, то к ней непосредственно присоединятся окончания: {\slv{-ъ}} или {\slv{-шъ}} (м. р.), {\slv{-ши}} (ж. р.), {\slv{-ше}} (ср. р.), а если основа оканчивается на \textbf{гласный}, то к ней непосредственно присоединяются окончания: {\slv{-въ}} или {\slv{-вшъ}} (м. р.), {\slv{-вши}} (ж. р.), {\slv{-вше}} (ср. р.).
 
-    \medskip\begin{adjustwidth}{\hstba}{0cm}
-        \raggedright{\tabcaptsize Краткие действительные причастия прошедшего времени}
-        \renewcommand*{\arraystretch}{1.4}
-        \begin{tabular}[c]{|c|c|c|c|}
-            \hline
-            \multicolumn{2}{|c|}{\mkcella{Мужской род}}
-            & \mkcella{Женский род}
-            & \mkcella{Средний род}
-            \\\hline
-            
-            {\slv{не́с{\large ъ}}}
-            & {\slv{не́с{\large шъ}}}
-            & {\slv{не́с{\large ши}}}
-            & {\slv{не́с{\large ше}}}
-            \\\hline
-            
-            {\slv{слы́ша{\large въ}}}
-            & {\slv{слы́ша{\large вшъ}}}
-            & {\slv{слы́ша{\large вши}}}
-            & {\slv{слы́ша{\large вше}}}
-            \\\hline
-            
-            
-            {\slv{хвали́{\large въ}}}
-            & {\slv{хвали́{\large вшъ}}}
-            & {\slv{хвали́{\large вши}}}
-            & {\slv{хвали́{\large вше}}}
-            \\\hline
-            
-        \end{tabular}
-    \end{adjustwidth}
+    \begin{placedtabular}[%
+%        caption={\tabcaptsize Краткие действительные причастия прошедшего времени}
+        ]{|c|c|c|c|}
+        \hline
+        \multicolumn{2}{|c|}{\mkcella{Мужской род}}
+        & \mkcella{Женский род}
+        & \mkcella{Средний род}
+        \\\hline
+        
+        {\slv{не́с{\large ъ}}}
+        & {\slv{не́с{\large шъ}}}
+        & {\slv{не́с{\large ши}}}
+        & {\slv{не́с{\large ше}}}
+        \\\hline
+        
+        {\slv{слы́ша{\large въ}}}
+        & {\slv{слы́ша{\large вшъ}}}
+        & {\slv{слы́ша{\large вши}}}
+        & {\slv{слы́ша{\large вше}}}
+        \\\hline
+        
+        
+        {\slv{хвали́{\large въ}}}
+        & {\slv{хвали́{\large вшъ}}}
+        & {\slv{хвали́{\large вши}}}
+        & {\slv{хвали́{\large вше}}}
+        \\\hline
+        
+    \end{placedtabular}
 
     \bigskip
     Краткие действительные причастия прошедшего времени (как и настоящего времени) с окончанием {\slv{-ъ}} ({\slv{-въ}}) в мужском роде и с окончанием {\slv{-ши}} ({\slv{-вши}}) в женском роде перешли в русский язык в качестве деепричастий прошедшего времени.
@@ -6785,35 +6774,33 @@
         \end{tabular}
     \end{adjustwidth}
     
-    \medskip\begin{adjustwidth}{\hstba}{0cm}
-%        \raggedright{\tabcaptsize Полные действительные причастия прошедшего времени}
-        \renewcommand*{\arraystretch}{1.4}
-        \begin{tabular}[c]{|c|c|c|c|}
-            \hline
-            \multicolumn{2}{|c|}{\mkcella{Мужской род}}
-            & \mkcella{Женский род}
-            & \mkcella{Средний род}
-            \\\hline
-            
-            \multicolumn{2}{|c|}{\slv{не́с{\large шїй}}}
-            & {\slv{не́с{\large шаѧ}}}
-            & {\slv{не́с{\large шее}}}
-            \\\hline
-            
-            {\slv{хвали́{\large вшїй}}}
-            & {\slv{хвали́{\large вый}}}
-            & {\slv{хвали́{\large вшаѧ}}}
-            & {\slv{хвали́{\large вшее}}}
-            \\\hline
-    
-            {\slv{твори́{\large вшїй}}}
-            & {\slv{твори́{\large вый}}}
-            & {\slv{твори́{\large вшаѧ}}}
-            & {\slv{твори́{\large вшее}}}
-            \\\hline
-            
-        \end{tabular}
-    \end{adjustwidth}
+    \begin{placedtabular}[%
+%        caption={\tabcaptsize Полные действительные причастия прошедшего времени}
+        ]{|c|c|c|c|}
+        \hline
+        \multicolumn{2}{|c|}{\mkcella{Мужской род}}
+        & \mkcella{Женский род}
+        & \mkcella{Средний род}
+        \\\hline
+        
+        \multicolumn{2}{|c|}{\slv{не́с{\large шїй}}}
+        & {\slv{не́с{\large шаѧ}}}
+        & {\slv{не́с{\large шее}}}
+        \\\hline
+        
+        {\slv{хвали́{\large вшїй}}}
+        & {\slv{хвали́{\large вый}}}
+        & {\slv{хвали́{\large вшаѧ}}}
+        & {\slv{хвали́{\large вшее}}}
+        \\\hline
+
+        {\slv{твори́{\large вшїй}}}
+        & {\slv{твори́{\large вый}}}
+        & {\slv{твори́{\large вшаѧ}}}
+        & {\slv{твори́{\large вшее}}}
+        \\\hline
+        
+    \end{placedtabular}
 
     \bigskip
     В глаголах совершенного вида вместо причастного окончания {\slv{-вый}} встречается окончание {\slv{-ей}} со смягчением предшествовавшего согласного. Например: {\slv{просвѣти́вый}}~---~{\slv{просвѣще́й}}, {\slv{ꙗ҆ви́выйсѧ}}~---~{\slv{ꙗ҆вле́й}}.
@@ -6898,6 +6885,7 @@
     В последнем случае (относительно смягчения губных) составляют исключения причастия: {\slv{ᲂу҆ѧ́звенъ}} (и {\slv{ᲂу҆ѧзвле́нъ}}) и {\slv{благослове́нъ}}.
     
     Все краткие страдательные причастия прошедшего времени склоняются, как соответствующие им имена прилагательные с кратким окончанием.
+    \pagebreak
 
                 \subsubsection{Полные страдательные причастия прошедшего времени}
 
@@ -6913,7 +6901,6 @@
     }
 
     Все полные страдательные причастия прошедшего времени склоняются, как соответствующие им имена прилагательные с полным окончанием.
-    \pagebreak
 
                 \subsubsection{Сложная страдательная форма глаголов}
 
@@ -6937,7 +6924,8 @@
         \hspca{муж. и ср. род}, {{\slv{твори́мꙋ}} ({\slv{творе́нꙋ}}) {\slv{бы́ти}}},
         \hspca{жен. род}, {{\slv{твори́мѣ}} ({\slv{творе́нѣ}}) {\slv{бы́ти}}}
     }
-
+    \pagebreak
+    
     Изъявительное наклонение:
 
     \bigskip\autorows[-1pt]{l}{2}{l}{
@@ -7024,7 +7012,8 @@
     Союз {\slv{бо}} (<<так>>, <<потому что>>) ставится после слова, к которому относится, и означает \emph{причину} или \emph{цель}: {\slv{Не ᲂу҆́мре бо, но спи́тъ}} (Лк. 8, 52).
     
     Когда союз {\slv{бо}} стоит после отрицания {\slv{не}}, то над ним ставится ударение, чтобы при сочетании слов {\slv{не}} и {\slv{бо}} и при слитном их произношении нельзя было смешать это сочетание со словом {\slv{не́бо}}: {\slv{Не бо̀ врагѡ́мъ твои̑мъ та́йнꙋ повѣ́мъ}} (Молитва ко св. причащению).
-    
+    \pagebreak
+        
     \bigskip\mockitem{2. Значение союза {\slv{ᲂу҆́бѡ}}}
     \medskip
     
@@ -7115,7 +7104,8 @@
     }
 
     Междометие в предложении не связано ни с каким его членом и само не является членом предложения.
-
+    \pagebreak
+    
         \section{Некоторые особенности церковнославянского синтаксиса}
                 \subsubsection{Двойной винительный падеж}
 
@@ -7189,8 +7179,9 @@
         \hspca{{\slv{Безвѣ̑стнаѧ и҆ та̑йнаѧ премꙋ́дрости твоеѧ̀ ꙗ҆ви́лъ мѝ є҆сѝ}} (Пс. 50, 8)},
         \hspca{{\slv{Ви́дѣхъ неразꙋмѣва́ющыѧ и҆ и҆ста́ѧхъ}} (Пс. 118, 158)}
     }
+    \pagebreak
 
-                \subsubsection{Отсутствие отрицания при глаголе при наличии местоимений{\slv{никто̀, ничто̀}}}
+                \subsubsection{Отсутствие отрицания при глаголе при наличии местоимений {\slv{никто̀, ничто̀}}}
 
     При местоимениях {\slv{никто̀, ничто̀}} ({\slv{никто́же, ничто́же}}) отрицательная частица {\slv{}}, которая ставится в русском языке перед глагольным сказуемым в церковнославянском языке обычно опускается. Например:
     
