@@ -198,9 +198,9 @@
     },
     stretch/.estore in=\arraystretch,
     place/.is choice,
-    place/left/.code=\@placedlefttrue\@placedrightfalse\@placedmiddlefalse,
-    place/right/.code=\@placedrighttrue\@placedleftfalse\@placedmiddlefalse,
-    place/middle/.code=\@placedmiddletrue\@placedleftfalse\@placedrightfalse,
+        place/left/.code=\@placedlefttrue\@placedrightfalse\@placedmiddlefalse,
+        place/right/.code=\@placedrighttrue\@placedleftfalse\@placedmiddlefalse,
+        place/middle/.code=\@placedmiddletrue\@placedleftfalse\@placedrightfalse,
     padding/.estore in=\@placedpadding,
     caption/.code=\@placedcapusedtrue\def\@placedcap{#1},
     scaption/.code=\@placedscapusedtrue\def\@placedscap{#1},
@@ -214,40 +214,40 @@
     \par\medskip\noindent\begin{minipage}{\textwidth}%
         \pgfkeys{/placedt, default, #1}%
         \if@placedleft%
-        \newdimen\@placedrest%
-        \@placedrest=\textwidth%
-        \advance\@placedrest by -\@placedpadding%
-        \hskip\@placedpadding%
-        \begin{minipage}{\@placedrest}%
-            \raggedright%
-            \else\if@placedmiddle%
+            \newdimen\@placedrest%
+            \@placedrest=\textwidth%
+            \advance\@placedrest by -\@placedpadding%
+            \hskip\@placedpadding%
+            \begin{minipage}{\@placedrest}%
+                \raggedright%
+        \else\if@placedmiddle%
             \centering%
-            \else\if@placedright%
+        \else\if@placedright%
             \newdimen\@placedrest%
             \@placedrest=\textwidth%
             \advance\@placedrest by -\@placedpadding%
             \begin{minipage}{\@placedrest}%
                 \raggedleft%
-                \fi\fi\fi%
-                \if@placedcapused%
-                {\if@placedcfontused\normalsize\normalfont\@placedcapfont\fi\@placedcap}%
-                \if@placedscapused%
+        \fi\fi\fi%
+        \if@placedcapused%
+            {\if@placedcfontused\normalsize\normalfont\@placedcapfont\fi\@placedcap}%
+            \if@placedscapused%
                 \addcontentsline{lot}{table}{\@placedscap}%
-                \else%
+            \else%
                 \addcontentsline{lot}{table}{\@placedcap}%
-                \fi%
-                \\[0.2\baselineskip]%
-                \fi%
-                \if@placedfontused\normalsize\normalfont\@placedfont\fi%
-                \begin{tabular}{#2}%
-                }{
-                \end{tabular}%
-                \if@placedmiddle\else%
-            \end{minipage}%
             \fi%
-        \end{minipage}%
+            \\[0.2\baselineskip]%
+        \fi%
+        \if@placedfontused\normalsize\normalfont\@placedfont\fi%
+        \begin{tabular}{#2}%
+    }{
+        \end{tabular}%
+        \if@placedmiddle\else%
+            \end{minipage}%
+        \fi%
+    \end{minipage}%
     }
-    \makeatother
+\makeatother
 
 %%/\ placedtabular courtesy of Skillmon /\%%
 
@@ -417,45 +417,38 @@
 
     Собрание всех букв языка, расположенных в общепринятом порядке, называется \textbf{азбукой} (от названия двух первых славянских букв <<аз>> и <<буки>>). Церковнославянская азбука состоит из 39 букв.
 
-
     \begin{center}
-        \renewcommand*{\arraystretch}{1.4}    \begin{longtable}{|c|c|c|c|}
+        \renewcommand*{\arraystretch}{1.4}    
+        \begin{longtable}{|c|c|c|c|}
 %            \caption*{Буквы церковнославянской азбуки}\\
-            \hline
+            \Xcline{1-4}{\arrayrulewidth}
             
             Прописная буква
             & Малая буква
             & Название
             & Произношение
             \\
-            
-            \hline
+            \Xcline{1-4}{\arrayrulewidth}
             \endfirsthead
             
-            \multicolumn{4}{l}
-            {
-%                \tablename\ \thetable\ -- 
-                \footnotesize\textit{Начало на предыдущей странице}
-            }
+            \multicolumn{4}{l}{\footnotesize\textit{Начало на предыдущей странице}}
             \\
-            
-            \hline
+            \Xcline{1-4}{\arrayrulewidth}
             
             Прописная буква
             & Малая буква
             & Название
             & Произношение
             \\
-                
-            \hline
+            \Xcline{1-4}{\arrayrulewidth}
             \endhead
-            \hline
+            \Xcline{1-4}{\arrayrulewidth}
             
             \multicolumn{4}{r}{\footnotesize\textit{Продолжение на следующей странице}}
             \\
             
             \endfoot
-            \hline
+            \Xcline{1-4}{\arrayrulewidth}
             \endlastfoot
             
             {\slv{А}}     & {\slv{а}}       & аз      & а\\\hln
@@ -2067,7 +2060,8 @@
     \textbf{Несовершенный вид} глаголов выражает действие или состояние с оттенком неопределенной продолжительности. Например: {\slv{плы́ти, повелѣва́ти}}.
     
     Совершенный вид глаголов, кроме вспомогательного глагола {\slv{бы́ти}}, не может иметь настоящего времени и преходящего.
-
+    \pagebreak
+    
                 \subsubsection{Будущее время глаголов}
 
     Глагол в будущем времени служит для выражения действия или состояния, которое должно совершиться впоследствии. Например:
@@ -2160,7 +2154,7 @@
     Вот образцы спряжения в этом наклонении глаголов {\slv{бы́ти}} и {\slv{хвали́ти}}:
 
 \begin{center}
-    {\tabcaptsize Спряжение в желательном наклонении глаголов {\slv{бы́ти}} и {\slv{хвали́ти}}}
+%    {\tabcaptsize Спряжение в желательном наклонении глаголов {\slv{бы́ти}} и {\slv{хвали́ти}}}
     \renewcommand*{\arraystretch}{1.2}
     \begin{tabular}[c]{|c|c|c|c|c|c|}
         \hline
