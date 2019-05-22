@@ -18,7 +18,7 @@ Typesetting: [Ponomar Project](http://sci.ponomar.net), XeLaTeX (system fonts)
 $ cd <download directory>
 $ sudo cp fonts-churchslavonic /usr/share/fonts
 $ fc-cache -f -v
-$ fc-list | grep "<name-of-font>"
+$ fc-list | grep PomorskyUnicode
 ```
 Alternatively, fonts can go in:
 ```
