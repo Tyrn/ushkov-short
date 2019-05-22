@@ -2,6 +2,7 @@
 !.gitattributes
 !.gitignore
 !*.md
+!Makefile
 !.gitkeep
 !*.tex
 !*/
