@@ -16,12 +16,15 @@ Typesetting: [Ponomar Project](http://sci.ponomar.net), XeLaTeX (system fonts)
 - [Download Church Slavonic Fonts](https://www.ponomar.net/files/fonts-churchslavonic.zip?_ga=2.259133578.1877773033.1558533869-234991592.1558533869), unpack;
 ```
 $ cd <download directory>
-$ sudo cp fonts-churchslavonic /usr/share/fonts
-$ fc-cache -f -v
+$ sudo cp fonts-churchslavonic ~/.local/share/fonts
+$ sudo fc-cache -f -v
 $ fc-list | grep PomorskyUnicode
 ```
 Alternatively, fonts can go in:
 ```
-~/.local/share/fonts
 /usr/local/share/fonts
 ```
+
+### Toolchain
+
+[Tex Live 2018](http://ftp.math.utah.edu/pub/tex/historic/systems/texlive/2018/)
