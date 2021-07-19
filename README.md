@@ -8,7 +8,7 @@ Typesetting: [Ponomar Project](http://sci.ponomar.net), XeLaTeX (system fonts)
 
 - [Keyboard layouts](http://sci.ponomar.net/keyboard.html)
 - [Software setup guidelines](http://sci.ponomar.net/users.html)
-- [IBus keyboard drivers](http://www.ponomar.net/apt/); [a known issue](https://github.com/typiconman/m17n-cu/issues/3)
+- [IBus keyboard drivers](http://ppa.launchpad.net/aleksandr-andreev/sci/ubuntu/pool/main/m/m17n-cu/); [a known issue](https://github.com/typiconman/m17n-cu/issues/3)
 
 #### Fonts
 
