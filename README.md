@@ -8,7 +8,8 @@ Typesetting: [Ponomar Project](http://sci.ponomar.net), XeLaTeX (system fonts)
 
 - [Keyboard layouts](http://sci.ponomar.net/keyboard.html)
 - [Software setup guidelines](http://sci.ponomar.net/users.html)
-- [IBus keyboard drivers](http://ppa.launchpad.net/aleksandr-andreev/sci/ubuntu/pool/main/m/m17n-cu/); [a known issue](https://github.com/typiconman/m17n-cu/issues/3)
+- [IBus keyboard drivers](http://ppa.launchpad.net/aleksandr-andreev/sci/ubuntu/pool/main/m/m17n-cu/);
+[a known issue](https://github.com/typiconman/m17n-cu/issues/3)
 
 #### Fonts
 
@@ -27,4 +28,4 @@ Alternatively, fonts can go in:
 
 ### Toolchain
 
-[Tex Live 2018](http://ftp.math.utah.edu/pub/tex/historic/systems/texlive/2018/); [howto](https://github.com/Tyrn/arch-chronicle/blob/master/Usage/LaTeX.md)
+[Tex Live 2021](http://ftp.math.utah.edu/pub/tex/historic/systems/texlive/2021/); [howto](https://github.com/Tyrn/arch-chronicle/blob/master/Usage/LaTeX.md)
